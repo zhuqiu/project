@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div class="top-info van-hairline--bottom">
+    <div class="top-info">
       <top-info></top-info>
     </div>
     <div class="content-info">
       <content-info></content-info>
     </div>
-    <div class="bottom-info">
+    <div class="bottom-info footer">
       <bottom-info></bottom-info>
     </div>
   </div>
@@ -49,7 +49,7 @@ export default {
     left: 0;
     right: 0;
     height: 40px;
-    line-height: 40px;
+    line-height: 43px;
     z-index: 1;
     border-bottom: 1px solid #999999;
   }
@@ -67,19 +67,10 @@ export default {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
-    line-height: 40px;
     z-index: 1;
-    /* background: red; */
+    /* box-shadow: 0 8px 12px #ebedf0; */
+    background: #fff;
   }
 
-  .con-bottom{
-    height: 20px;
-    line-height: 20px;
-    padding: 0 8px;
-    background: #ffffff;
-    border-bottom-left-radius:4px;
-    border-bottom-right-radius:4px;
-    color: #999;
-  }
+
 </style>

@@ -9,15 +9,15 @@
       <van-col span="14">
         <div class="person-operation">
           <div>
-            <van-icon name="gold-coin-o" />
+            <van-icon name="gold-coin-o" size="20"/>
             <span>提现</span>
             </div>
           <div>
-            <van-icon name="balance-list-o" />
+            <van-icon name="balance-list-o" size="20"/>
             <span>充值</span>
           </div>
           <div>
-            <van-icon name="fire-o" />
+            <van-icon name="fire-o" size="20"/>
             <span>推广</span>
           </div>
         </div>
@@ -46,6 +46,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.top-info i{
+  position: relative;
+  top: 4px;
+}
 .person-info{
   text-align: left;
 }
