@@ -18,7 +18,7 @@
       <van-field
         v-model="passwordagain"
         type="password"
-        label="密码"
+        label="确认密码"
         placeholder="请再次输入密码"
         required
       />
@@ -28,22 +28,47 @@
         clearable
         label="短信验证码"
         placeholder="请输入短信验证码"
+        required
       >
         <van-button slot="button" size="small" type="primary">发送验证码</van-button>
       </van-field>
     </van-cell-group>
+
+    <van-row>
+      <van-col span="24">
+        <van-button plain type="primary" size="large" class="margin-top" @click="register">注册</van-button>
+      </van-col>
+    </van-row>
+
+    <van-row>
+      <van-col span="24">
+        <div>
+          已注册，去登录>
+        </div>
+      </van-col>
+    </van-row>
   </div>
 </template>
 
 <script>
+
+import test  from'./test'
 export default {
   name: 'login',
+   components:{
+    test
+  },
   data () {
     return {
       phone:'',
       password:'',
       passwordagain:'',
       sms:''
+    }
+  },
+  methods:{
+    register(){
+
     }
   }
 }

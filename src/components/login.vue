@@ -26,7 +26,7 @@
     <van-row>
       <van-col span="24">
         <van-button type="primary" size="large" class="margin-top">登录</van-button>
-        <van-button plain type="primary" size="large" class="margin-top">注册</van-button>
+        <van-button plain type="primary" size="large" class="margin-top" @click="goToRegister">注册</van-button>
       </van-col>
     </van-row>
 
@@ -40,21 +40,35 @@
       @delete="onDelete"
     />
 
-
+    <!-- <div style="width:300px;">
+      <test></test>
+    </div> -->
   </div>
 </template>
 
 <script>
+
+import test  from'./test'
 export default {
   name: 'login',
+   components:{
+    test
+  },
   data () {
     return {
       phone:'',
       password:'',
-      show:false
+      show:false,
+      val:{
+        name:'zf',
+        id:1
+      }
     }
   },
-  created:{
+  methods:{
+    goToRegister(){
+      this.$router.push({name:'register'});
+    },
     onInput(){
 
     },

@@ -19,4 +19,13 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.container{
+  background: #f0f3f6;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+}
 </style>
