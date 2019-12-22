@@ -12,7 +12,7 @@
             <van-icon name="gold-coin-o" size="20"/>
             <span>提现</span>
             </div>
-          <div>
+          <div @click="recharge">
             <van-icon name="balance-list-o" size="20"/>
             <span>充值</span>
           </div>
@@ -23,15 +23,21 @@
         </div>
       </van-col>
     </van-row>
+
+    <!-- 充值弹框 -->
+    <recharge-model ref="recharge"></recharge-model>
+
   </div>
 </template>
 
 <script>
 
+import rechargeModel from './Model/recharge-model.vue'
+
 export default {
   name: 'top-info',
    components:{
-
+     rechargeModel:rechargeModel
   },
   data () {
     return {
@@ -39,7 +45,9 @@ export default {
     }
   },
   methods:{
-
+    recharge(){
+      this.$refs.recharge.show();
+    }
   }
 }
 </script>

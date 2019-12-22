@@ -3,7 +3,7 @@
     <van-row>
       <van-col span="24">
         <van-cell-group>
-          <van-field
+          <!--<van-field
             v-model="phone"
             @touchstart.stop="show = true"
             clickable
@@ -11,12 +11,20 @@
             placeholder="请输入手机号"
             error-message=""
             required
+          />-->
+          <van-field
+            v-model="formData.loginName"
+            label="用户名"
+            placeholder="请输入手机号"
+            :error-message="errorData.errorName"
+            required
           />
           <van-field
-            v-model="password"
+            v-model="formData.loginPassword"
             type="password"
             label="密码"
             placeholder="请输入密码"
+            :error-message="errorData.errorPassword"
             required
           />
         </van-cell-group>
@@ -25,12 +33,12 @@
 
     <van-row>
       <van-col span="24">
-        <van-button type="primary" size="large" class="margin-top">登录</van-button>
+        <van-button type="primary" size="large" class="margin-top" @click="login">登录</van-button>
         <van-button plain type="primary" size="large" class="margin-top" @click="goToRegister">注册</van-button>
       </van-col>
     </van-row>
 
-    <van-number-keyboard
+    <!--<van-number-keyboard
       :show="show"
       v-model="phone"
       extra-key="."
@@ -38,36 +46,58 @@
       @blur="show = false"
       @input="onInput"
       @delete="onDelete"
-    />
+    />-->
 
-    <!-- <div style="width:300px;">
-      <test></test>
-    </div> -->
   </div>
 </template>
 
 <script>
 
-import test  from'./test'
+import Api from '../../static/js/service-api';
+
+import { splitParam }  from'../../static/js/utils'
+
 export default {
   name: 'login',
    components:{
-    test
+
   },
   data () {
     return {
-      phone:'',
-      password:'',
-      show:false,
-      val:{
-        name:'zf',
-        id:1
-      }
+    	formData:{
+    		loginName:'',
+    		loginPassword:''
+    	},
+    	errorData:{
+    		errorName: '',
+    		errorPassword: ''
+    	}
     }
+  },
+  mounted(){
+//	console.log(Api)
   },
   methods:{
     goToRegister(){
       this.$router.push({name:'register'});
+    },
+    login(){
+    	// this.$router.push({name:'Index'});
+    	if(this.formData.loginName === ''){
+    		this.errorData.errorName = '请输入登录名';
+    		return;
+    	}
+    	this.errorData.errorName = '';
+    	if(this.formData.loginPassword === ''){
+    		this.errorData.errorPassword = '请输入密码';
+    		return;
+    	}
+    	this.errorData.errorPassword = '';
+    	this.$axios.post(Api.serviceApi.login + splitParam(this.formData) ).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }
+			})
     },
     onInput(){
 

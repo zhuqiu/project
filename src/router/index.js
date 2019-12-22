@@ -8,6 +8,8 @@ import login from '@/components/login.vue'
 
 import register from '@/components/register.vue'
 
+import rechargecenter from '@/components/views/recharge-center.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -26,6 +28,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: register
+    },
+    {
+      path: '/rechargecenter',
+      name: 'rechargecenter',
+      component: rechargecenter
     }
   ]
 })

@@ -10,13 +10,18 @@ import 'lib-flexible/flexible'
 
 import Vant from 'vant';
 
+import axios from 'axios';
+
 import 'vant/lib/index.css';
 
-import '../static/css/commin.css'
+import '../static/css/common.css'
 
 Vue.use(Vant);
 
-Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
+
+
+
 
 /* eslint-disable no-new */
 new Vue({
