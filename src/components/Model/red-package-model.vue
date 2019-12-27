@@ -21,7 +21,10 @@
 		        </div>
 		      </div>
 		    </div>
-		    <div class="red-package-detail">
+        <div class="red-package-open" @click="showDetail" v-if="showOpen">
+          <img src="../../../static/img/img03.png" alt="">
+        </div>
+		    <div class="red-package-detail" v-if="!showOpen">
 		      <ul class="red-package-item">
 		        <li>
 		          <div class="item-left">
@@ -61,13 +64,17 @@ export default {
 	name: 'red-package-model',
   data() {
   	return {
-  		visible: false
+      visible: false,
+      showOpen: true
   	}
   },
   methods:{
   	show() {
   		this.visible = true;
-  	}
+    },
+    showDetail(){
+      this.showOpen = false;
+    }
   }
 }
 </script>
@@ -75,6 +82,9 @@ export default {
 <style scoped>
 .overlay-style{
   width: 80%;
+}
+.overlay-style .van-popup__close-icon {
+  color: #ffffff;
 }
 
 .red-package-title{
@@ -86,7 +96,7 @@ export default {
   box-sizing: border-box;
   height: 120px;
   width: 100%;
-  background: #CC3300;
+  background:rgb(203,93,73);
 }
 .red-package-title .red-package-title-top{
   display: flex;
@@ -122,6 +132,11 @@ export default {
   height: 40px;
   border-radius: 50%;
   margin-right: 8px;
+}
+
+.red-package-open img{
+  width: 100%;
+  display: block ;
 }
 .red-package-detail{
   box-sizing: border-box;

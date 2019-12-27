@@ -41,16 +41,7 @@
 					</van-tab>
 					<van-tab title="充值明细">
 						<div class="no-content">暂无充值明细</div>
-						<table>
-							<tr>
-								<th>Month</th>
-								<th>Savings</th>
-							</tr>
-							<tr>
-								<td>January</td>
-								<td>$100</td>
-							</tr>
-						</table>
+						<common-table :data="dataList" :row="dataRow"></common-table>
 					</van-tab>
 					<van-tab title="提现明细">
 						<div class="no-content">暂无提现明细</div>
@@ -68,15 +59,28 @@
 
 import commonColumn from '../views/common-column.vue';
 
+import commonTable from '../views/common-table.vue';
+
 export default {
+
 	name: 'account-details-model',
 	components:{
-	commonColumn: commonColumn
-  },
+		commonColumn: commonColumn,
+		commonTable:commonTable
+	},
+	
 	data() {
 		return {
 			visible: false,
-			active:0
+			active:0,
+			dataList:[],
+			dataRow:[{
+				name:'234'
+			},{
+				name:'234'
+			},{
+				name:'234'
+			}]
 		}
 	},
 	methods:{
