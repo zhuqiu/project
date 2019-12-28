@@ -55,11 +55,15 @@ export default {
   created(){
     this.name = this.dataInfo.loginName;
     this.amout = this.dataInfo.money;
-    this.src = this.dataInfo.headImg ? data.headImg : '.././static/img/LC_icon_user_group_fill.png';
+    this.src = this.dataInfo.headImg ? this.dataInfo.headImg : '.././static/img/LC_icon_user_group_fill.png';
   },
   methods:{
     recharge(){
       this.$refs.recharge.show();
+    },
+    change(data){
+      this.amout = data.money;
+      localStorage
     }
   }
 }

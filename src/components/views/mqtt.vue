@@ -57,7 +57,7 @@ export default {
       // console.log('连接成功')
       // this.$emit('messageArrived', '连接成功')
       this.client.subscribe(this.topic) // 订阅主题
-      //this.client.subscribe(this.tousepic) // 订阅主题
+      this.client.subscribe(this.tousepic) // 订阅主题
     },
     // mqtt连接失败
     clientFailure (e) {
@@ -76,7 +76,7 @@ export default {
     // 接收消息事件
     onMessageArrived (message) {
       console.log(message)
-      // this.$emit('messageArrived', JSON.parse(message.payloadString))
+      this.$emit('messageArrived', message.payloadString)
     },
     // 断开mqtt连接
     disconnect () {

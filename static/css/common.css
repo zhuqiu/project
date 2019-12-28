@@ -13,26 +13,48 @@
 }
 
 .common-model-class{
-		width:80%;
-		font-size: 14px;
-	}
-	.common-model-class .van-popup__close-icon--top-right{
-		top:10px;
-		right: 10px;
-		color: #000000;
-	}
-	.common-model-class .common-model-title{
-		box-sizing: border-box;
-		height: 40px;
-		line-height: 40px;
-		background: #f0f3f6;
-		padding: 0 10px;
-		font-size: 14px;
-		font-weight: 500;
-	}
-	.common-model-class .common-model-content{
-		box-sizing: border-box;
-		padding: 10px;
-		max-height: 400px;
-		overflow-y: auto;
-	}
+	width:80%;
+	font-size: 14px;
+}
+.common-model-class .van-popup__close-icon--top-right{
+	top:10px;
+	right: 10px;
+	color: #000000;
+}
+.common-model-class .common-model-title{
+	box-sizing: border-box;
+	height: 40px;
+	line-height: 40px;
+	background: #f0f3f6;
+	padding: 0 10px;
+	font-size: 14px;
+	font-weight: 500;
+}
+.common-model-class .common-model-content{
+	box-sizing: border-box;
+	padding: 10px;
+	min-height: 200px;
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+.common-model-content .van-tabs--line .van-tabs__wrap{
+	height: 30px;
+	line-height: 30px;
+}
+
+.common-model-content .van-tab{
+	font-size: 12px;
+	line-height: 30px;
+}
+
+.common-model-content .item-list{
+	width: 100%;
+}
+.common-model-content .item-list li{
+	width: 100%;
+	margin-top: 10px;
+	font-size: 12px;
+	font-weight: 400;
+}
+

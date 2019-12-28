@@ -11,30 +11,41 @@
 				<div>
           <van-row>
             <van-col span="8">
-              红包大小：
+              <span class="title">红包大小：</span>
             </van-col>
             <van-col span="10">
-              <van-stepper v-model="formData.money" :min="5" integer />
+              <van-stepper v-model="formData.money" :min="10" integer :step="10"/>
             </van-col>
             <van-col span="4">
-              金币
+              <span class="title">金币</span>
             </van-col>
           </van-row>
         </div>
-        <div style="margin-top:10px;">
+        <div class="margin-top">
           <van-row>
             <van-col span="8">
-              红包雷号：
+              <span class="title">红包雷号：</span>
             </van-col>
             <van-col span="10">
-              <van-stepper v-model="formData.leishu" integer />
+              <van-stepper v-model="formData.leishu" :min="0" integer />
             </van-col>
           </van-row>
         </div>
-        <div style="margin-top:10px;">
+        <div class="margin-top">
           <van-row type="flex" justify="center">
             <van-col span="8">
               <van-button type="primary" size="small" @click="send">立即发送</van-button>
+            </van-col>
+          </van-row>
+        </div>
+        <div class="margin-top tip">
+          <van-row>
+            <van-col span="24">
+              <div class="van-hairline--top"></div>
+            </van-col>
+            <van-col span="24">
+              <p>1.发红包有人‘中雷’可获得红包总额1.6倍每人</p>
+              <p>2.抢红包若’踩雷‘需按红包总额赔偿1.6倍</p>
             </van-col>
           </van-row>
         </div>
@@ -55,7 +66,7 @@ export default {
 		return {
       visible: false,
       formData:{
-        money:5,
+        money:10,
         leishu:0
       }
 		}
@@ -70,7 +81,7 @@ export default {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
-
+          this.visible = false;
         }
 			})
     }
@@ -80,5 +91,12 @@ export default {
 </script>
 
 <style>
-
+.common-model-content .title{
+  position: relative;
+  top: 4px;
+}
+.common-model-content .tip p{
+  color: #999;
+  font-size: 10px;
+}
 </style>
