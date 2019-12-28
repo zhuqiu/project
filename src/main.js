@@ -16,6 +16,8 @@ import 'vant/lib/index.css';
 
 import '../static/css/common.css'
 
+import '../static/js/mqtt.js'
+
 Vue.use(Vant);
 
 Vue.prototype.$axios = axios;
@@ -23,6 +25,16 @@ Vue.prototype.$axios = axios;
 
 
 
+
+router.beforeEach((to, from, next) => {
+  Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
+  if (to.path === '/') {
+    next();
+  } else {
+
+    next();
+  }
+});
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

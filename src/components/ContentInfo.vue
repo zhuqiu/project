@@ -68,6 +68,8 @@
     <!--账户详情弹框-->
     <account-details-model ref="accountDetails"></account-details-model>
 
+    <!-- mqtt通信组件 -->
+    <mqtt ref="mqtt" :topic="clientParams.topic" :tousepic="clientParams.tousepic" @messageArrived="onMessageArrived"></mqtt>
   </div>
 </template>
 <script>
@@ -76,13 +78,16 @@ import redPackageModel from './Model/red-package-model.vue';
 
 import accountDetailsModel from './Model/account-details-model.vue'
 
+import mqtt from './views/mqtt'
+
 
 
 export default {
   name: 'content-info',
   components:{
-	redPackageModel: redPackageModel,
-  accountDetailsModel: accountDetailsModel
+    redPackageModel: redPackageModel,
+    accountDetailsModel: accountDetailsModel,
+    mqtt:mqtt
   },
   data() {
     return {
@@ -121,15 +126,37 @@ export default {
         status:true,
         name: '3',
         img: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576515318255&di=6ebc0200b27d2e9aa9a0e121d446523f&imgtype=0&src=http%3A%2F%2Fimg.bimg.126.net%2Fphoto%2FqySPuZDJE1ssEsHtI16xFg%3D%3D%2F2854437738824178662.jpg'
-      }]
+      }],
+      clientParams: {
+        hostname: '',
+        port: undefined,
+        topic: '',
+        clientId:new Date().getTime()+"",
+        userName: '',
+        password: ''
+      }
     }
   },
   mounted() {
-
+    let data = JSON.parse(localStorage.getItem('data'));
+    this.clientParams.hostname = '47.106.88.215';  //data.mqttIp;
+    this.clientParams.port = 9000;  //data.mqttPort;
+    this.clientParams.topic = 'user2/3'; //data.mqttTopic;
+    this.clientParams.tousepic = data.mqttUserTopic;
+    this.clientParams.userName = data.mqttUsername;
+    this.clientParams.password = data.mqttPassword
+    this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
+  },
+  beforeDestroy () {
+    this.$refs.mqtt.disconnect() // 关闭页面断开mqtt连接
   },
   methods:{
     redPackageClick(){
       this.$refs.redPackage.show();
+    },
+    // 接收mqtt消息
+    onMessageArrived (msg) {
+      console.log(msg)
     }
   }
 }

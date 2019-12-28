@@ -82,7 +82,6 @@ export default {
       this.$router.push({name:'register'});
     },
     login(){
-    	// this.$router.push({name:'Index'});
     	if(this.formData.loginName === ''){
     		this.errorData.errorName = '请输入登录名';
     		return;
@@ -96,6 +95,12 @@ export default {
     	this.$axios.post(Api.serviceApi.login + splitParam(this.formData) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
+        }else{
+          localStorage.setItem('data',JSON.stringify(res.data.data))
+          this.$toast('登录成功');
+          setTimeout(() =>{
+            this.$router.push({name:'Index'});
+          },1000)
         }
 			})
     },

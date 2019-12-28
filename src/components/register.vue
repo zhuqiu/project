@@ -116,6 +116,10 @@ export default {
       this.$axios.post(Api.serviceApi.register + splitParam(this.formData) ).then((res) => {
 			  if(res.data.code === '0'){
           this.$toast('注册成功');
+          localStorage.setItem('data',JSON.stringify(res.data.data))
+          setTimeout(() =>{
+            this.$router.push({name:'Index'});
+          },1000)
         }else{
           this.$toast(res.data.msg);
         }

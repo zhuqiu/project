@@ -1,12 +1,18 @@
 <template>
   <div>
     <van-row>
-      <van-col span="10">
+      <van-col span="12">
         <div class="person-info">
-          333
+          <div class="info-img">
+            <img :src="src" alt="">
+          </div>
+          <div class="con-info">
+            <div class="info-name">账号：<span>{{ name }}</span></div>
+            <div class="info-amout">金币：{{ amout }} </div>
+          </div>
         </div>
       </van-col>
-      <van-col span="14">
+      <van-col span="12">
         <div class="person-operation">
           <div>
             <van-icon name="gold-coin-o" size="20"/>
@@ -41,8 +47,15 @@ export default {
   },
   data () {
     return {
-
+      src:'',
+      name:'',
+      amout: null
     }
+  },
+  created(){
+    this.name = this.dataInfo.loginName;
+    this.amout = this.dataInfo.money;
+    this.src = this.dataInfo.headImg ? data.headImg : '.././static/img/LC_icon_user_group_fill.png';
   },
   methods:{
     recharge(){
@@ -60,6 +73,32 @@ export default {
 }
 .person-info{
   text-align: left;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.person-info .info-img img{
+  width: 24px;
+  border-radius: 50%;
+  position: relative;
+  top: 6px;
+}
+.person-info .con-info{
+  display: flex;
+  flex-direction: column;
+  line-height: 14px;
+  margin-left: 6px;
+}
+.person-info .con-info .info-name{
+  font-size: 10px;
+}
+.person-info .con-info .info-name span{
+  color: #07c160;
+}
+.person-info .con-info .info-amout{
+  text-align: left;
+  font-weight: 600;
 }
 .person-operation{
   display: flex;
