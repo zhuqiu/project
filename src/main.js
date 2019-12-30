@@ -27,6 +27,8 @@ Vue.prototype.$axios = axios;
 
 
 router.beforeEach((to, from, next) => {
+  // localStorage.clear();
+  // return;
   Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
   if (to.path === '/') {
     next();

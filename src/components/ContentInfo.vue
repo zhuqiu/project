@@ -8,9 +8,11 @@
     <ul class="list-item">
       <li v-for="(item,index) in listData" :key="index" class="item-info" :class="item.status ? 'item-left' : 'item-right'">
         <van-row>
+
+          <!-- 为自己的红包展示区 -->
           <van-col :span="item.status ? '4' : '20'" :class="{right:!item.status}">
             <div v-if="!item.status"  class="item-con" @click="redPackageClick(item)">
-              <div class="con-top" :class="{'has-empty': !item.redStatus}">
+              <div class="con-top" :class="{'has-empty': item.hasStatus || item.robbedBao === item.baoAmount }">
                   <van-row>
                     <van-col span="6">
                       <img class="red-package" src="../../static/img/red-package.png" alt="">
@@ -24,14 +26,17 @@
                   </van-row>
               </div>
               <div class="con-bottom">
-                <span>恭喜发财，大吉大利</span>
+                <span v-if ="item.robbedBao != item.baoAmount">恭喜发财，大吉大利</span>
+                <span v-else>已抢完</span>
               </div>
             </div>
             <img v-if=" item.status" :src="item.sendHeadImg?item.sendHeadImg: '.././static/img/LC_icon_user_group_fill.png'" class="item-img">
           </van-col>
+
+          <!-- 别人发的红包展示区 -->
           <van-col :span="item.status ? '20' : '4'" :class="{left: item.status}">
             <div v-if="item.status"  class="item-con" @click="redPackageClick(item)">
-              <div class="con-top" :class="{'has-empty': !item.redStatus}">
+              <div class="con-top" :class="{'has-empty': item.hasStatus || item.robbedBao === item.baoAmount }">
                   <van-row>
                     <van-col span="6">
                       <img class="red-package" src="../../static/img/red-package.png" alt="">
@@ -45,7 +50,8 @@
                   </van-row>
               </div>
               <div class="con-bottom">
-                <span>恭喜发财，大吉大利</span>
+                <span v-if ="item.robbedBao != item.baoAmount">恭喜发财，大吉大利</span>
+                <span v-else>已抢完</span>
               </div>
             </div>
             <img v-if="!item.status" :src="item.sendHeadImg?item.sendHeadImg: '.././static/img/LC_icon_user_group_fill.png'" class="item-img">
@@ -54,13 +60,9 @@
         <van-row>
           <van-col span="24">
             <ul class="msg-item">
-              <li>
+              <li v-for="(msg, msgdex) in item.hasList" :key="msgdex">
                 <img src="../../static/img/img01.png" alt="">
-                <span>1212321312321312</span>
-              </li>
-              <li>
-                <img src="../../static/img/img01.png" alt="">
-                <span>哈哈</span>
+                <span>{{ msg }}</span>
               </li>
             </ul>
           </van-col>
@@ -125,7 +127,6 @@ export default {
     }
 
     this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
-
   },
   beforeDestroy () {
     this.$refs.mqtt.disconnect() // 关闭页面断开mqtt连接
@@ -141,9 +142,10 @@ export default {
       let data = JSON.parse(msg);
       //红包列表数据
       switch(data.type){
+        //发红包消息推送
         case 1:
           //判断数组中是否还有该元素
-          let list = this.listData.find((r) =>{
+          let list = this.listData.find((r) => {
             return r.redNum === data.data.redNum;
           })
           // debugger
@@ -153,15 +155,43 @@ export default {
             }else{
               data.data.status = true;
             }
+            data.data.hasList = []; //已抢红包用户提示
+            data.data.hasStatus = false; //该红包是否已抢过
+            data.data.hasNum = 0; //当前已抢红包人数
+            data.data.recordList = []; //当前已抢红包用户记录数
+            data.data.hasRedTitle = ''; //已抢到的红包提示
             this.listData.push(data.data);
             localStorage.setItem('list',JSON.stringify(this.listData));
           }
           break;
+        //抢红包消息推送
         case 2:
+          this.listData.forEach((l) => {
+            if(l.redNum === data.data.redNum){
+              if(!l.hasList){
+                l.hasList = [];
+              }
+              if(l.hasList.length === 0){
+                l.hasList.push(data.data.msg);
+              }else{
+                if(!l.hasList.includes(data.data.msg)){
+                  l.hasList.push(data.data.msg)
+                }
+              }
+              //l.hasList =Array.from(new Set(l.hasList.push(data.data.msg)));
+            }
+          })
           break;
         case 3:
           break;
         case 4:
+          //抢红包人数变动
+          this.listData.forEach((l) => {
+            if(l.redNum === data.data.redNum){
+              l.robbedBao = data.data.persions;
+            }
+          });
+          localStorage.setItem('list',JSON.stringify(this.listData));
           break;
 
         case 5:
@@ -180,9 +210,16 @@ export default {
 
 
     },
-    onRedOpen(){
+    onRedOpen(data){
       //事件触发表明该红包已抢过
-
+      this.listData.forEach((l) => {
+        if(l.redNum === data.id){
+          l.hasStatus = true;
+          l.hasNum = data.length;
+          l.recordList = data.list;
+          l.hasRedTitle = data.title;
+        }
+      })
     }
   }
 }

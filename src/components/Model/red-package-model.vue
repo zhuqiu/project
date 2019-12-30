@@ -31,7 +31,7 @@
 		      <ul class="red-package-item">
 		        <li v-for="(item,index) in list" :key="index">
 		          <div class="item-left">
-		            <img :src="data.headImg ? data.headImg : '../.././static/img/LC_icon_user_group_fill.png'" alt="">
+		            <img :src="item.headImg ? item.headImg : '../.././static/img/LC_icon_user_group_fill.png'" alt="">
 		            <div>
 		              <div class="item-name">{{ item.nickname ? item.nickname : 'xxx' }}</div>
 		              <div class="item-time">{{ item.operTime }}</div>
@@ -70,29 +70,45 @@ export default {
   methods:{
   	show(data) {
       this.data = data;
-
-
-  		this.visible = true;
+      this.title = null;
+      this.visible = true;
+      this.showOpen = true;
+      if(data.hasStatus){
+        this.showOpen = false;
+        this.list = data.recordList;
+        this.title = data.hasRedTitle;
+        this.handleGetRedPackage(data.hasNum)
+      }
     },
     showDetail(){
-      this.showOpen = false;
+      this.handleGetRedPackage(0)
+    },
+    handleGetRedPackage(num){
       let obj = {
         redNum: this.data.redNum,
         redStatus: this.data.redStatus,
         curPersions: this.data.robbedBao,
-        recordCount: 0,
+        recordCount: num,
         token: this.dataInfo.token
       };
-      this.handleGetRedPackage(obj)
-      this.$emit('redOpen');
-    },
-    handleGetRedPackage(data){
-      this.$axios.post(Api.serviceApi.getRedPackage + splitParam(data) ).then((res) => {
+
+      this.$axios.post(Api.serviceApi.getRedPackage + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
-          this.title = res.data.data.title;
-          this.list = res.data.data.recordList;
+          this.showOpen = false;
+          // debugger
+          if(res.data.data.title){
+            this.title = res.data.data.title;
+            this.list = res.data.data.recordList;
+            let obj = {
+              id: this.data.redNum,
+              length: this.list.length,
+              list: res.data.data.recordList,
+              title: res.data.data.title
+            }
+            this.$emit('redOpen', obj);
+          }
         }
 			})
     }
