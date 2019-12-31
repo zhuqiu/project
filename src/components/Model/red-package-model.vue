@@ -10,12 +10,15 @@
 		  <div class="red-package-layer">
 		    <div class="red-package-title">
 		      <div class="red-package-title-top">
-		        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576515318255&di=6ebc0200b27d2e9aa9a0e121d446523f&imgtype=0&src=http%3A%2F%2Fimg.bimg.126.net%2Fphoto%2FqySPuZDJE1ssEsHtI16xFg%3D%3D%2F2854437738824178662.jpg" class="img-info" alt="">
-		        <div>321ewqewq</div>
+		        <img :src="data.sendHeadImg ? data.sendHeadImg : '../.././static/img/LC_icon_user_group_fill.png'" class="img-info" alt="">
+		        <div>{{ data.redOpenName }}</div>
 		      </div>
 		      <div class="red-package-title-bottom">
-		        <div class="detail-title">抢到1.65 金币</div>
-		        <div class="selected-title">
+		        <div class="detail-title">
+              <span v-if="!title">{{ data.redName }}</span>
+              <span v-if="title">{{ title }}</span>
+            </div>
+		        <div class="selected-title" v-if="false">
 		          <img src="../../../static/img/img02.png" alt="">
 		          <span>踩雷了！-16金币</span>
 		        </div>
@@ -26,32 +29,20 @@
         </div>
 		    <div class="red-package-detail" v-if="!showOpen">
 		      <ul class="red-package-item">
-		        <li>
+		        <li v-for="(item,index) in list" :key="index">
 		          <div class="item-left">
-		            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576515318255&di=6ebc0200b27d2e9aa9a0e121d446523f&imgtype=0&src=http%3A%2F%2Fimg.bimg.126.net%2Fphoto%2FqySPuZDJE1ssEsHtI16xFg%3D%3D%2F2854437738824178662.jpg" alt="">
+		            <img :src="item.headImg ? item.headImg : '../.././static/img/LC_icon_user_group_fill.png'" alt="">
 		            <div>
-		              <div class="item-name">eqwewqeq</div>
-		              <div class="item-time">2019:91;91</div>
+		              <div class="item-name">{{ item.nickname ? item.nickname : 'xxx' }}</div>
+		              <div class="item-time">{{ item.operTime }}</div>
 		            </div>
 		          </div>
 		          <div class="item-right">
-		            <div class="item-money">1.88金币</div>
+		            <div class="item-money">{{ item.money }} 金币</div>
 		            <img src="" alt="">
 		          </div>
 		        </li>
-		        <li>
-		          <div class="item-left">
-		            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576515318255&di=6ebc0200b27d2e9aa9a0e121d446523f&imgtype=0&src=http%3A%2F%2Fimg.bimg.126.net%2Fphoto%2FqySPuZDJE1ssEsHtI16xFg%3D%3D%2F2854437738824178662.jpg" alt="">
-		            <div>
-		              <div class="item-name">eqwewqeq</div>
-		              <div class="item-time">2019:91;91</div>
-		            </div>
-		          </div>
-		          <div class="item-right">
-		            <div class="item-money">1.88金币</div>
-		            <img src="../../../static/img/img02.png" alt="">
-		          </div>
-		        </li>
+
 		      </ul>
 		    </div>
 		  </div>
@@ -60,20 +51,66 @@
 </template>
 
 <script>
+
+import Api from '../../../static/js/service-api';
+
+import { splitParam }  from'../../../static/js/utils'
+
 export default {
 	name: 'red-package-model',
   data() {
   	return {
       visible: false,
-      showOpen: true
-  	}
+      showOpen: true,
+      data:'',
+      list: [],
+      title: null
+    }
   },
   methods:{
-  	show() {
-  		this.visible = true;
+  	show(data) {
+      this.data = data;
+      this.title = null;
+      this.visible = true;
+      this.showOpen = true;
+      if(data.hasStatus){
+        this.showOpen = false;
+        this.list = data.recordList;
+        this.title = data.hasRedTitle;
+        this.handleGetRedPackage(data.hasNum)
+      }
     },
     showDetail(){
-      this.showOpen = false;
+      this.handleGetRedPackage(0)
+    },
+    handleGetRedPackage(num){
+      let obj = {
+        redNum: this.data.redNum,
+        redStatus: this.data.redStatus,
+        curPersions: this.data.robbedBao,
+        recordCount: num,
+        token: this.dataInfo.token
+      };
+
+      this.$axios.post(Api.serviceApi.getRedPackage + splitParam(obj) ).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          this.showOpen = false;
+          // debugger
+          if(res.data.data.title){
+            this.title = res.data.data.title;
+            this.list = res.data.data.recordList;
+            let obj = {
+              id: this.data.redNum,
+              length: this.list.length,
+              list: res.data.data.recordList,
+              title: res.data.data.title
+            }
+            this.$emit('redOpen', obj);
+          }
+        }
+			})
     }
   }
 }
@@ -132,6 +169,7 @@ export default {
   height: 40px;
   border-radius: 50%;
   margin-right: 8px;
+  background: #ffffff;
 }
 
 .red-package-open img{

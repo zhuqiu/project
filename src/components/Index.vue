@@ -1,10 +1,10 @@
 <template>
   <div class="container">
     <div class="top-info">
-      <top-info></top-info>
+      <top-info ref="topinfo"></top-info>
     </div>
     <div class="content-info">
-      <content-info></content-info>
+      <content-info ref="contentinfo" @contentDataChange="onContentDataChange"></content-info>
     </div>
     <div class="bottom-info footer">
       <bottom-info></bottom-info>
@@ -32,7 +32,9 @@ export default {
     }
   },
   methods:{
-
+    onContentDataChange(data){
+      this.$refs.topinfo.change(data);
+    }
   }
 }
 </script>

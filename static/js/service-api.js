@@ -1,4 +1,4 @@
-const  remoteUrl = 'http://106.52.123.85:8888/';
+const  remoteUrl = 'http://139.9.91.193:8888';
 export default{
 	serviceApi:{
 

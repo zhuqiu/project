@@ -7,7 +7,7 @@
         </div>
       </van-col>
       <van-col span="18">
-        <div class="dispute-info">
+        <div class="dispute-info" @click="sendRedClick">
           <div class="dispute-input">点击 发红包</div>
         </div>
       </van-col>
@@ -74,15 +74,18 @@
         </van-col>
       </van-row>
     </div>
+    <send-red-package-model ref="sendRedPackage"></send-red-package-model>
   </div>
 </template>
 
 <script>
 
+import sendRedPackageModel from './Model/send-red-package-model.vue';
+
 export default {
   name: 'bottom-info',
    components:{
-
+     sendRedPackageModel:sendRedPackageModel
   },
   data () {
     return {
@@ -92,6 +95,9 @@ export default {
   methods:{
     showMuchInfo(){
       this.show = !this.show;
+    },
+    sendRedClick(){
+      this.$refs.sendRedPackage.show();
     }
   }
 }
