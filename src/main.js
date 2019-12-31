@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
   axios.interceptors.response.use(function (response) {
 
     if(response.data.code === 1001 ){
-      localStorage.clear();
+
       that.$router.push({name:'login'});
       setTimeout( () => {
         Toast('登录信息已失效，请重新登录！');
