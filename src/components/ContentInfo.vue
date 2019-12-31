@@ -133,8 +133,6 @@ export default {
   },
   methods:{
     redPackageClick(item){
-      console.log(item);
-
       this.$refs.redPackage.show(item);
     },
     // 接收mqtt消息
@@ -148,9 +146,10 @@ export default {
           let list = this.listData.find((r) => {
             return r.redNum === data.data.redNum;
           })
-          // debugger
+
           if(!list){
             if(data.data.sendUid === this.dataInfo.uid){
+              //判断红包是否为自己
               data.data.status = false;
             }else{
               data.data.status = true;
@@ -160,7 +159,21 @@ export default {
             data.data.hasNum = 0; //当前已抢红包人数
             data.data.recordList = []; //当前已抢红包用户记录数
             data.data.hasRedTitle = ''; //已抢到的红包提示
+
             this.listData.push(data.data);
+
+            //内容滚动到最底部
+            this.$nextTick(() =>{
+              let ele = document.querySelector('.content-info');
+              if(ele.scrollHeight > ele.clientHeight) {
+                //设置滚动条到最底部
+                setTimeout(() =>{
+                  ele.scrollTop = ele.scrollHeight;
+                },200)
+                
+              }
+            })
+
             localStorage.setItem('list',JSON.stringify(this.listData));
           }
           break;
@@ -171,18 +184,19 @@ export default {
               if(!l.hasList){
                 l.hasList = [];
               }
-              if(l.hasList.length === 0){
-                l.hasList.push(data.data.msg);
-              }else{
-                if(!l.hasList.includes(data.data.msg)){
-                  l.hasList.push(data.data.msg)
-                }
+              if(!l.hasList.includes(data.data.msg)){
+                l.hasList.push(data.data.msg)
               }
-              //l.hasList =Array.from(new Set(l.hasList.push(data.data.msg)));
             }
           })
           break;
         case 3:
+          this.listData.forEach((l) => {
+            if(l.redNum === data.data.redNum){
+              l.hasList.push(data.data.msg)
+            }
+          });
+          localStorage.setItem('list',JSON.stringify(this.listData));
           break;
         case 4:
           //抢红包人数变动
@@ -193,9 +207,14 @@ export default {
           });
           localStorage.setItem('list',JSON.stringify(this.listData));
           break;
-
+        //红包已被抢完
         case 5:
-
+          this.listData.forEach((l) => {
+            if(l.redNum === data.data.redNum){
+              l.redStatus = data.data.redStatus;
+            }
+          });
+          localStorage.setItem('list',JSON.stringify(this.listData));
           break;
         //用户金额变化
         case 6:
@@ -205,10 +224,12 @@ export default {
             this.$emit('contentDataChange',obj);
           }
           break;
+        //连接失败
+        case 7: 
+          this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
+          break;
 
       }
-
-
     },
     onRedOpen(data){
       //事件触发表明该红包已抢过
@@ -227,6 +248,7 @@ export default {
 
 <style scoped>
 .list-item{
+  padding-bottom: 10px;
   height: 100%;
   width: 100%;
 }

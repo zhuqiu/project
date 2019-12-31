@@ -172,6 +172,10 @@ export default {
   background: #ffffff;
 }
 
+.red-package-open{
+  min-height: 200px; 
+} 
+
 .red-package-open img{
   width: 100%;
   display: block ;

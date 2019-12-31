@@ -33,7 +33,7 @@ Vue.prototype.$axios = axios;
 router.beforeEach((to, from, next) => {
   // localStorage.clear();
   // return;
-  let that = this;
+
   Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
 
   //添加请求拦截器
@@ -46,9 +46,13 @@ router.beforeEach((to, from, next) => {
   // 添加响应拦截器
   axios.interceptors.response.use(function (response) {
 
-    if(response.data.code === 1001 ){
+    if(response.data.code === '1001' ){
+      console.log(Vue)
+      router.replace({
+        path: '/login',
+        query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
+      })
 
-      that.$router.push({name:'login'});
       setTimeout( () => {
         Toast('登录信息已失效，请重新登录！');
       })

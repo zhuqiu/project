@@ -2,6 +2,14 @@
   <div class="container">
     <van-cell-group>
       <van-field
+        v-model="formData.nickname"
+        type="text"
+        label="昵称"
+        placeholder="请输入昵称"
+        :error-message="errorData.errorNickName"
+        required
+      />
+      <van-field
         v-model="formData.loginName"
         type="number"
         label="手机号"
@@ -69,13 +77,15 @@ export default {
       	loginName: '',
       	loginPassword: '',
       	passwordagain: '',
-      	phoneCode: ''
+        phoneCode: '',
+        nickname: ''
       },
       errorData: {
       	errorName: '',
       	errorLoginPassword: '',
       	errorPasswordagain: '',
-      	errPhoneCode: ''
+        errPhoneCode: '',
+        errorNickName: ''
       },
       sendText: '获取验证码',
       disabled: false
@@ -83,6 +93,13 @@ export default {
   },
   methods:{
     register(){
+      this.errorData.errorNickName = '';
+			if(this.formData.nickname === ''){
+				this.errorData.errorNickName = '请输入昵称';
+				return
+      }
+      this.errorData.errorNickName = '';
+      
 			this.errorData.errorName = '';
 			if(this.formData.loginName === ''){
 				this.errorData.errorName = '请输入手机号';
