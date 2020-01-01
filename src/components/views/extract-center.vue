@@ -7,17 +7,66 @@
         left-arrow
         @click-left="onClickLeft"
       />
-      
+      <van-tabs v-model="active" color="#1989fa">
+        <van-tab title="提现">
+          <van-row class="margin-top">
+            <van-col span="8" class="label">
+              <span>可用余额</span>
+            </van-col>
+            <van-col span="16" class="content">
+              <div class="money">{{$route.params.num}}</div>
+              <span class="tip">提现自动扣除3%手续费</span>
+            </van-col>
+          </van-row>
+          <van-row class="margin-top">
+            <van-col span="8" class="label" style="position:relative;top:14px;">
+              <span class="required">提现金额</span>
+              </van-col>
+            <van-col span="16">
+              <van-cell-group>
+                <van-field v-model="value" type="number" placeholder="请输入金额" />
+              </van-cell-group>
+            </van-col>
+          </van-row>
+          <van-row class="margin-top">
+            <van-col span="8" class="label">
+              <span class="required">收款二维码</span>
+            </van-col>
+            <van-col span="16" class="content">
+              <van-uploader :after-read="afterRead" v-model="fileList" :max-count="1"/>
+            </van-col>
+          </van-row>
+          <van-row class="margin-top">
+            <van-col span="8">
+
+            </van-col>
+            <van-col span="16" class="content">
+              <van-button type="primary" size="small" @click="submit">立即提交</van-button>
+            </van-col>
+          </van-row>
+        </van-tab>
+        <van-tab title="提现记录">
+
+        </van-tab>
+      </van-tabs>
     </div>
 	</div>
 </template>
 
 <script>
+
+import { splitParam }  from'../../../static/js/utils';
+
+import Api from '../../../static/js/service-api';
+
 export default {
-	name: 'recharge-center',
+	name: 'extract-center',
 	data() {
 		return {
-
+      active:0,
+      value: null,
+      fileList: [],
+      file: undefined
 		}
   },
   mounted(){
@@ -26,12 +75,82 @@ export default {
 	methods:{
     onClickLeft(){
       this.$router.push({name: 'Index'})
+    },
+    afterRead(file){
+      this.file = file.file;
+    },
+    submit(){
+      if(!this.value){
+        this.$toast('请输入提现的金额');
+        return;
+      }
+      if(this.value > this.$route.params.num){
+        this.$toast('可用余额不足');
+        return;
+      }
+      if(this.fileList.length === 0){
+        this.$toast('请上传收款二维码');
+        return;
+      }
+
+      let obj = {
+        money: this.value,
+        token: this.dataInfo.token
+      }
+
+      let formData = new FormData();
+
+      formData.append("file", this.file);
+      console.log(formData)
+
+      let toast = this.$toast.loading({
+        message: '加载中...',
+        duration: 0, // 持续展示 toast
+        forbidClick: true,
+        loadingType: 'spinner'
+      });
+
+      this.$axios.post(Api.serviceApi.getCash + splitParam(obj),formData).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          toast.clear();
+          this.$toast('提交成功,待工作人员审核');
+        }
+			},(err) => {
+        toast.clear();
+        this.$toast('网络繁忙，请重试');
+      })
     }
 	}
 
 }
 </script>
 
-<style>
+<style scoped>
+.label{
+  font-size: 14px;
+  color: #000000;
 
+}
+.label span{
+  position: relative;
+}
+.label .required:after{
+  content: '*';
+  color: red;
+  position: absolute;
+  left: -6px;
+  top: 0;
+}
+.content{
+  text-align: left;
+}
+.content .money{
+  font-size: 14px;
+  color: red;
+}
+.content .tip{
+  color: red;
+}
 </style>

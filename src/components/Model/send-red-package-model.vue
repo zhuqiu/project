@@ -44,8 +44,8 @@
               <div class="van-hairline--top"></div>
             </van-col>
             <van-col span="24">
-              <p>1.发红包有人‘中雷’可获得红包总额1.6倍每人</p>
-              <p>2.抢红包若’踩雷‘需按红包总额赔偿1.6倍</p>
+              <p>1.发红包有人‘中雷’可获得红包总额1.7倍每人</p>
+              <p>2.抢红包若’踩雷‘需按红包总额赔偿1.7倍</p>
             </van-col>
           </van-row>
         </div>
@@ -76,6 +76,10 @@ export default {
 			this.visible = true;
     },
     send(){
+      if(this.formData.leishu > this.formData.money){
+        this.$toast('红包雷号不能大于红包大小');
+        return false;
+      }
       this.formData.token = this.dataInfo.token;
       this.$axios.post(Api.serviceApi.sendRedPackage + splitParam(this.formData) ).then((res) => {
 			  if(res.data.code !== '0'){

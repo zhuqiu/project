@@ -6,13 +6,13 @@
           <van-icon name="service-o" size="20"/>
         </div>
       </van-col>
-      <van-col span="18">
-        <div class="dispute-info" @click="sendRedClick">
+      <van-col span="18" @click="sendRedClick">
+        <div class="dispute-info">
           <div class="dispute-input">点击 发红包</div>
         </div>
       </van-col>
-      <van-col span="2">
-        <div class="setting-info">
+      <van-col span="2" @click="robotDeposit">
+        <div class="setting-info" >
           <van-icon name="setting-o" size="20"/>
         </div>
       </van-col>
@@ -24,7 +24,7 @@
     </van-row>
     <div class="much-item" v-show="show">
       <van-row>
-        <van-col span="6">
+        <van-col span="6" @click="onlineService">
           <div class="item-detail">
             <van-icon name="phone-o" size="30"/>
             <span>客服在线</span>
@@ -33,16 +33,16 @@
         <van-col span="6">
           <div class="item-detail">
             <van-icon name="manager-o" size="30"/>
-            <span>充值服务</span>
+            <span>充值客服</span>
           </div>
         </van-col>
         <van-col span="6">
           <div class="item-detail">
-            <van-icon name="refund-o" size="30"/>
-            <span>金币互转</span>
+            <div style="height:30px;line-height:30px;font-size: 20px;color:#07c160;">{{ dataInfo.id }}</div>
+            <span>复制我的ID</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="gameIntroduce">
           <div class="item-detail">
             <van-icon name="other-pay" size="30"/>
             <span>玩法介绍</span>
@@ -62,19 +62,26 @@
         </van-col>
         <van-col span="6">
           <div class="item-detail">
-            <van-icon name="refund-o" size="30"/>
+            <van-icon name="exchange" size="30"/>
             <span>金币互转</span>
           </div>
         </van-col>
         <van-col span="6">
           <div class="item-detail">
             <van-icon name="refund-o" size="30"/>
-            <span>金币互转</span>
+            <span>佣金福利</span>
           </div>
         </van-col>
       </van-row>
     </div>
+
     <send-red-package-model ref="sendRedPackage"></send-red-package-model>
+
+    <robot-deposit-model ref="robotDeposit"></robot-deposit-model>
+
+    <online-service-model ref="onlineService"></online-service-model>
+
+    <game-introduce-model ref="gameIntroduce"></game-introduce-model>
   </div>
 </template>
 
@@ -82,10 +89,19 @@
 
 import sendRedPackageModel from './Model/send-red-package-model.vue';
 
+import robotDepositModel from './Model/robot-deposit-model.vue';
+
+import onlineServiceModel from './Model/online-service-model.vue';
+
+import gameIntroduceModel from './Model/game-introduce-model.vue';
+
 export default {
   name: 'bottom-info',
    components:{
-     sendRedPackageModel:sendRedPackageModel
+     sendRedPackageModel:sendRedPackageModel,
+     robotDepositModel:robotDepositModel,
+     onlineServiceModel:onlineServiceModel,
+     gameIntroduceModel:gameIntroduceModel
   },
   data () {
     return {
@@ -98,6 +114,15 @@ export default {
     },
     sendRedClick(){
       this.$refs.sendRedPackage.show();
+    },
+    robotDeposit(){
+      this.$refs.robotDeposit.show();
+    },
+    onlineService(){
+      this.$refs.onlineService.show();
+    },
+    gameIntroduce(){
+      this.$refs.gameIntroduce.show();
     }
   }
 }

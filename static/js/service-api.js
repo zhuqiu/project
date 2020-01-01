@@ -15,7 +15,13 @@ export default{
     getRedPackage: remoteUrl + '/data/api/qiangbao',
 
     //获取验证码
-    getPhoneCode: remoteUrl + '/data/api/getPhoneCode'
+    getPhoneCode: remoteUrl + '/data/api/getPhoneCode',
+
+    //提现
+    getCash: remoteUrl + '/data/api/cash',
+
+    //获取支付地址
+    getPayUrl: remoteUrl + '/data/api/getPayUrl'
 
 	}
 }

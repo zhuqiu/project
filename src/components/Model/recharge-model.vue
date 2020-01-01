@@ -31,6 +31,11 @@
 </template>
 
 <script>
+
+import Api from '../../../static/js/service-api';
+
+import { splitParam }  from'../../../static/js/utils'
+
 export default {
 	name: 'account-details-model',
 	data() {
@@ -63,7 +68,17 @@ export default {
     },
     payClick(item,index){
       this.curindex = index;
-      this.$router.push({name: 'rechargecenter', params: {num: item.number}})
+      let obj = {
+        money: item.number,
+        token: this.dataInfo.token
+      }
+      this.$axios.post(Api.serviceApi.getPayUrl + splitParam(obj) ).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          window.location.href = res.data.data;
+        }
+			})
     }
 	}
 

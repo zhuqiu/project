@@ -6,9 +6,9 @@
 		  get-container="body"
 		  class="common-model-class"
 		>
-			<div class="common-model-title">321321312</div>
+			<div class="common-model-title">在线客服</div>
 			<div class="common-model-content">
-				
+				<img :src="dataInfo.customerImg" alt="">
 			</div>
 		</van-popup>
 	</div>
@@ -27,10 +27,12 @@ export default {
 			this.visible = true;
 		}
 	}
-	
+
 }
 </script>
 
-<style>
-	
+<style scoped>
+.common-model-content img{
+  width: 100%;
+}
 </style>

@@ -14,7 +14,7 @@
       </van-col>
       <van-col span="12">
         <div class="person-operation">
-          <div>
+          <div @click="extract">
             <van-icon name="gold-coin-o" size="20"/>
             <span>提现</span>
             </div>
@@ -22,7 +22,7 @@
             <van-icon name="balance-list-o" size="20"/>
             <span>充值</span>
           </div>
-          <div>
+          <div @click="extension">
             <van-icon name="fire-o" size="20"/>
             <span>推广</span>
           </div>
@@ -33,6 +33,8 @@
     <!-- 充值弹框 -->
     <recharge-model ref="recharge"></recharge-model>
 
+    <!-- 推广弹框 -->
+    <extension-model ref="extension"></extension-model>
   </div>
 </template>
 
@@ -40,10 +42,13 @@
 
 import rechargeModel from './Model/recharge-model.vue'
 
+import extensionModel from './Model/extension-model.vue'
+
 export default {
   name: 'top-info',
    components:{
-     rechargeModel:rechargeModel
+     rechargeModel:rechargeModel,
+     extensionModel:extensionModel
   },
   data () {
     return {
@@ -53,7 +58,7 @@ export default {
     }
   },
   created(){
-    this.name = this.dataInfo.loginName;
+    this.name = this.dataInfo.inviteCode;
     this.amout = this.dataInfo.money;
     this.src = this.dataInfo.headImg ? this.dataInfo.headImg : '.././static/img/LC_icon_user_group_fill.png';
   },
@@ -61,9 +66,14 @@ export default {
     recharge(){
       this.$refs.recharge.show();
     },
+    extract(){
+      this.$router.push({name: 'extractcenter', params: {num: this.amout}})
+    },
+    extension(){
+      this.$refs.extension.show();
+    },
     change(data){
       this.amout = data.money;
-      localStorage
     }
   }
 }

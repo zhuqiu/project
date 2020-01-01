@@ -10,6 +10,8 @@ import register from '@/components/register.vue'
 
 import rechargecenter from '@/components/views/recharge-center.vue'
 
+import extractcenter from '@/components/views/extract-center.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +40,12 @@ export default new Router({
       path: '/rechargecenter',
       name: 'rechargecenter',
       component: rechargecenter
+    },
+    {
+      path: '/extractcenter',
+      name: 'extractcenter',
+      component: extractcenter
     }
+
   ]
 })
