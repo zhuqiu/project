@@ -159,7 +159,6 @@ export default {
             data.data.hasNum = 0; //当前已抢红包人数
             data.data.recordList = []; //当前已抢红包用户记录数
             data.data.hasRedTitle = ''; //已抢到的红包提示
-
             this.listData.push(data.data);
 
             //内容滚动到最底部
@@ -170,7 +169,7 @@ export default {
                 setTimeout(() =>{
                   ele.scrollTop = ele.scrollHeight;
                 },200)
-                
+
               }
             })
 
@@ -191,6 +190,7 @@ export default {
           })
           break;
         case 3:
+          //赔付--中雷
           this.listData.forEach((l) => {
             if(l.redNum === data.data.redNum){
               l.hasList.push(data.data.msg)
@@ -225,7 +225,7 @@ export default {
           }
           break;
         //连接失败
-        case 7: 
+        case 7:
           this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
           break;
 

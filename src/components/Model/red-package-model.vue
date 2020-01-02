@@ -18,7 +18,7 @@
               <span v-if="!title">{{ data.redName }}</span>
               <span v-if="title">{{ title }}</span>
             </div>
-		        <div class="selected-title" v-if="false">
+		        <div class="selected-title" v-if="unlucky === 2">
 		          <img src="../../../static/img/img02.png" alt="">
 		          <span>踩雷了！-16金币</span>
 		        </div>
@@ -39,7 +39,7 @@
 		          </div>
 		          <div class="item-right">
 		            <div class="item-money">{{ item.money }} 金币</div>
-		            <img src="" alt="">
+		            <img src="../../../static/img/img02.png" alt="" v-if="item.unlucky ===2">
 		          </div>
 		        </li>
 
@@ -64,18 +64,27 @@ export default {
       showOpen: true,
       data:'',
       list: [],
-      title: null
+      title: null,
+      unlucky: 1
     }
   },
   methods:{
   	show(data) {
       this.data = data;
+
       this.title = null;
       this.visible = true;
       this.showOpen = true;
+      this.unlucky = 1;
       if(data.hasStatus){
         this.showOpen = false;
         this.list = data.recordList;
+
+        this.list.forEach((item) =>{
+        if(item.uid === this.dataInfo.uid){
+          this.unlucky = item.unlucky;
+        }
+      })
         this.title = data.hasRedTitle;
         this.handleGetRedPackage(data.hasNum)
       }
@@ -101,6 +110,11 @@ export default {
           if(res.data.data.title){
             this.title = res.data.data.title;
             this.list = res.data.data.recordList;
+            this.list.forEach((item) =>{
+              if(item.uid === this.dataInfo.uid){
+                this.unlucky = item.unlucky;
+              }
+            })
             let obj = {
               id: this.data.redNum,
               length: this.list.length,
@@ -173,8 +187,8 @@ export default {
 }
 
 .red-package-open{
-  min-height: 200px; 
-} 
+  min-height: 200px;
+}
 
 .red-package-open img{
   width: 100%;
@@ -191,7 +205,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   margin: 8px 0;
 }
 .red-package-item li .item-left{

@@ -27,7 +27,7 @@
               <span class="title">红包雷号：</span>
             </van-col>
             <van-col span="10">
-              <van-stepper v-model="formData.leishu" :min="0" integer />
+              <van-stepper v-model="formData.leishu" :min="0" :max="9" integer />
             </van-col>
           </van-row>
         </div>

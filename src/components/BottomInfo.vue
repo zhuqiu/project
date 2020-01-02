@@ -60,7 +60,7 @@
             <span>推广管理</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="">
           <div class="item-detail">
             <van-icon name="exchange" size="30"/>
             <span>金币互转</span>
