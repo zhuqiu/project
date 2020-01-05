@@ -26,15 +26,17 @@ Vue.use(Toast);
 
 Vue.prototype.$axios = axios;
 
-
-
-
-
 router.beforeEach((to, from, next) => {
   // localStorage.clear();
   // return;
 
   Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
+
+  if(Vue.prototype.dataInfo){
+    let title = Vue.prototype.dataInfo.groupName; //修改title
+    document.title = title ? title : ''
+  }
+
   if(to.name === 'Index' && !JSON.parse(localStorage.getItem('data'))){
     router.push({name: 'login'})
   }

@@ -88,7 +88,9 @@ import accountDetailsModel from './Model/account-details-model.vue'
 
 import mqtt from './views/mqtt'
 
+import Api from '../../static/js/service-api';
 
+import { splitParam }  from'../../static/js/utils'
 
 export default {
   name: 'content-info',
@@ -122,7 +124,7 @@ export default {
     this.clientParams.tousepic = this.dataInfo.mqttUserTopic;
     this.clientParams.userName = this.dataInfo.mqttUsername;
     this.clientParams.password = this.dataInfo.mqttPassword;
-
+    this.getsyncUserInfo();
     if(localStorage.getItem('list')){
       this.listData = JSON.parse(localStorage.getItem('list')).concat([]);
     }
@@ -150,6 +152,18 @@ export default {
 
         }
       })
+    },
+    getsyncUserInfo(){
+      let obj = {
+        token: this.dataInfo.token
+      }
+      this.$axios.post(Api.serviceApi.getsyncUserInfo + splitParam(obj) ).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          localStorage.setItem('data',JSON.stringify(res.data.data))
+        }
+			})
     },
     // 接收mqtt消息
     onMessageArrived (msg) {
@@ -232,10 +246,14 @@ export default {
             this.$emit('contentDataChange',obj);
           }
           break;
-        // 用户收入佣金
+        //用户收入佣金
         case 7:
           if(data.data.uid === this.dataInfo.uid){
-            this.$toast(data.data.msg);
+            this.listData.forEach((l) => {
+              if(l.redNum === data.data.redNum){
+                l.hasList.push(data.data.msg)
+              }
+            });
           }
           break;
         case 8:
@@ -247,7 +265,9 @@ export default {
       //事件触发表明该红包已抢过
       this.listData.forEach((l) => {
         if(l.redNum === data.id){
-          l.hasStatus = true;
+          if(l.sendUid != this.dataInfo.uid){
+            l.hasStatus = true;
+          }
           l.hasNum = data.length;
           l.recordList = data.list;
           l.hasRedTitle = data.title;

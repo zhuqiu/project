@@ -76,7 +76,7 @@ export default {
       this.$refs.extension.show();
     },
     change(data){
-      this.amout = data.money;
+      this.amout = data.money.toFixed(2);
       localStorage.setItem('amout', this.amout)
     },
     infoPop(){

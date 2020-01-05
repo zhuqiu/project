@@ -60,7 +60,7 @@
                 <van-stepper v-model="autoForm.fabaoIntervalMinutes" :min="10" :step="10" integer/>
               </van-col>
               <van-col span="4">
-                <span class="title">秒</span>
+                <span class="title">分</span>
               </van-col>
             </van-row>
             <van-row class="margin-top">

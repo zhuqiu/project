@@ -7,7 +7,7 @@
         left-arrow
         @click-left="onClickLeft"
       />
-      <van-tabs v-model="active" color="#1989fa" style="padding:0 10px">
+      <!-- <van-tabs v-model="active" color="#1989fa" style="padding:0 10px">
         <van-tab title="提现">
           <van-row class="margin-top">
             <van-col span="8" class="label">
@@ -49,14 +49,83 @@
           <div class="no-content" v-if="dataList.length === 0">暂无充值明细</div>
 					<common-table :data="dataList" :row="dataRow" class="margin-top" v-else></common-table>
         </van-tab>
-      </van-tabs>
+      </van-tabs> -->
+      <div style="padding:0 10px 10px 10px;">
+        <van-divider>提现</van-divider>
+        <van-row class="margin-top">
+          <van-col span="8" class="label">
+            <span>可用余额</span>
+          </van-col>
+          <van-col span="16" class="content">
+            <div class="money">{{$route.params.num}}</div>
+            <span class="tip">提现自动扣除3%手续费</span>
+          </van-col>
+        </van-row>
+        <van-row class="margin-top">
+          <van-col span="8" class="label" style="position:relative;top:14px;">
+            <span class="required">提现金额</span>
+            </van-col>
+          <van-col span="16">
+            <van-cell-group>
+              <van-field v-model="value" type="number" placeholder="请输入金额" />
+            </van-cell-group>
+          </van-col>
+        </van-row>
+        <van-row class="margin-top">
+          <van-col span="8" class="label">
+            <span class="required">收款二维码</span>
+          </van-col>
+          <van-col span="16" class="content">
+            <van-uploader :after-read="afterRead" v-model="fileList" :max-count="1"/>
+          </van-col>
+        </van-row>
+        <van-row class="margin-top">
+          <van-col span="8">
+
+          </van-col>
+          <van-col span="16" class="content">
+            <van-button type="primary" size="small" @click="submit">立即提交</van-button>
+          </van-col>
+        </van-row>
+
+        <van-divider>提现明细</van-divider>
+        <div class="no-content" v-if="dataList.length === 0">暂无提现明细</div>
+        <ul class="item-list" v-else>
+          <li v-for="(item, index) in dataList" :key="index">
+            <common-column>
+              <div class="account-detail-content">
+                <div class="account-detail-content-top">
+                  <div class="detail-content-item">
+                    <div>充值金额</div>
+                    <div>{{ item.money }}</div>
+                  </div>
+                </div>
+                <div class="account-detail-content-bottom">
+                  <div class="detail-content-item">
+                    <div>订单号</div>
+                    <div>{{ item.orderNo }}</div>
+                  </div>
+                  <div class="detail-content-item">
+                    <div>时间</div>
+                    <div>{{ item.time }}</div>
+                  </div>
+                  <div class="detail-content-item">
+                    <div>状态</div>
+                    <div>{{ item.status }}</div>
+                  </div>
+                </div>
+              </div>
+            </common-column>
+          </li>
+        </ul>
+      </div>
     </div>
 	</div>
 </template>
 
 <script>
 
-import commonTable from './common-table.vue';
+import commonColumn from '../views/common-column.vue';
 
 import { splitParam }  from'../../../static/js/utils';
 
@@ -65,7 +134,7 @@ import Api from '../../../static/js/service-api';
 export default {
   name: 'extract-center',
   components:{
-		commonTable
+		commonColumn
 	},
 	data() {
 		return {
@@ -163,6 +232,7 @@ export default {
 </script>
 
 <style scoped>
+
 .label{
   font-size: 14px;
   color: #000000;
@@ -187,6 +257,34 @@ export default {
 }
 .content .tip{
   color: red;
+}
+
+.item-list{
+	width: 100%;
+}
+.item-list li{
+	width: 100%;
+	margin-bottom: 10px;
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.account-detail-content{
+  background: #ffffff;
+  padding: 0 4px;
+}
+.account-detail-content-top,.account-detail-content-bottom{
+  padding-bottom: 6px;
+}
+.account-detail-content-top{
+  border-bottom: 1px solid #f0f3f6;
+}
+.detail-content-item{
+  padding: 6px 6px 0 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .no-content{
   color: #999999;

@@ -6,7 +6,10 @@ export default{
 		login: remoteUrl + '/data/api/login',
 
 		//用户注册
-		register: remoteUrl + '/data/api/registerByPhone',
+    register: remoteUrl + '/data/api/registerByPhone',
+
+    //获取用户红包列表信息
+    getsyncUserInfo: remoteUrl + '/data/api/syncUserInfo',
 
 		//发红包
 		sendRedPackage: remoteUrl + '/data/api/fabao',

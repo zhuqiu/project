@@ -71,22 +71,27 @@ export default {
   methods:{
   	show(data) {
       this.data = data;
-      this.title = null;
-      this.tip = null;
+      if(!data.status){
+        this.title = null;
+        this.tip = null;
+      }
       this.visible = true;
       this.showOpen = true;
       this.unlucky = 1;
-      if(data.hasStatus){
+      if(data.hasStatus || !data.status){
         this.showOpen = false;
         this.list = data.recordList;
 
         this.list.forEach((item) =>{
-        if(item.uid === this.dataInfo.uid){
-          this.unlucky = item.unlucky;
+          if(item.uid === this.dataInfo.uid){
+            this.unlucky = item.unlucky;
+          }
+        })
+        if(data.status){
+          this.title = data.hasRedTitle;
+          this.tip = data.hasSelectTip;
         }
-      })
-        this.title = data.hasRedTitle;
-        this.tip = data.hasSelectTip;
+
         this.handleGetRedPackage(data.hasNum)
       }
     },
@@ -126,11 +131,13 @@ export default {
           this.$toast(res.data.msg);
         }else{
           this.showOpen = false;
-          if(num === 0){
+          if(num === 0 && this.data.status){
             this.getMessageAudio();
           }
           if(res.data.data.title){
-            this.title = res.data.data.title;
+            if(this.data.status){
+              this.title = res.data.data.title;
+            }
             this.list = res.data.data.recordList;
             this.list.forEach((item) =>{
               if(item.uid === this.dataInfo.uid){
@@ -141,8 +148,8 @@ export default {
               id: this.data.redNum,
               length: this.list.length,
               list: res.data.data.recordList,
-              title: res.data.data.title,
-              tip: res.data.data.msg
+              title: this.data.status ? res.data.data.title : '',
+              tip: this.data.status ? res.data.data.msg : ''
             }
             this.$emit('redOpen', obj);
           }

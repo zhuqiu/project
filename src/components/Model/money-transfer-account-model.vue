@@ -8,12 +8,12 @@
 		>
 			<div class="common-model-title">金币互转</div>
 			<div class="common-model-content">
-        <van-steps :active="active">
+        <!-- <van-steps :active="active">
           <van-step>转账金币</van-step>
           <van-step>收款账户</van-step>
-        </van-steps>
+        </van-steps> -->
 
-        <div v-if="active === 0">
+        <div>
           <van-cell-group>
             <van-field v-model="value" type="number" placeholder="请输入转账金额" />
           </van-cell-group>
@@ -22,7 +22,7 @@
           </p>
         </div>
 
-        <div v-if="active === 1">
+        <div>
           <van-cell-group>
             <van-field v-model="inviteCode" type="number" placeholder="请输入收款ID" />
           </van-cell-group>
@@ -32,9 +32,9 @@
         </div>
 
         <div style="text-align:center">
-          <van-button type="primary" size="small" v-if="active === 0" @click="nextStep">下一步</van-button>
-          <van-button type="default" size="small" v-if="active === 1" @click="prevStep">上一步</van-button>
-          <van-button type="primary" size="small" v-if="active === 1" @click="submit">转账</van-button>
+          <!-- <van-button type="primary" size="small" v-if="active === 0" @click="nextStep">下一步</van-button>
+          <van-button type="default" size="small" v-if="active === 1" @click="prevStep">上一步</van-button> -->
+          <van-button type="primary" size="small" @click="submit">转账</van-button>
         </div>
 			</div>
 		</van-popup>
@@ -76,6 +76,10 @@ export default {
       this.active = 0;
     },
     submit(){
+      if(this.value === ''){
+        this.$toast('请输入转账金额');
+        return
+      }
       if(this.inviteCode === ''){
         this.$toast('请输入收款人ID');
         return
@@ -95,6 +99,7 @@ export default {
           this.$toast(res.data.msg);
         }else{
           this.$toast('转账成功');
+          this.value = '';
           this.visible = false;
         }
 			},(err) => {
