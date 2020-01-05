@@ -7,7 +7,7 @@
         left-arrow
         @click-left="onClickLeft"
       />
-      <van-tabs v-model="active" color="#1989fa">
+      <van-tabs v-model="active" color="#1989fa" style="padding:0 10px">
         <van-tab title="提现">
           <van-row class="margin-top">
             <van-col span="8" class="label">
@@ -46,7 +46,8 @@
           </van-row>
         </van-tab>
         <van-tab title="提现记录">
-
+          <div class="no-content" v-if="dataList.length === 0">暂无充值明细</div>
+					<common-table :data="dataList" :row="dataRow" class="margin-top" v-else></common-table>
         </van-tab>
       </van-tabs>
     </div>
@@ -55,22 +56,41 @@
 
 <script>
 
+import commonTable from './common-table.vue';
+
 import { splitParam }  from'../../../static/js/utils';
 
 import Api from '../../../static/js/service-api';
 
 export default {
-	name: 'extract-center',
+  name: 'extract-center',
+  components:{
+		commonTable
+	},
 	data() {
 		return {
       active:0,
       value: null,
       fileList: [],
-      file: undefined
+      file: undefined,
+      dataList:[],
+			dataRow:[{
+        name:'提现金额',
+        slot: 'money'
+			},{
+        name:'订单编号',
+        slot: 'orderNo'
+			},{
+        name:'提现时间',
+        slot: 'time'
+			},{
+        name:'提现状态',
+        slot: 'status'
+			}]
 		}
   },
   mounted(){
-    console.log(this.$route.params.num)
+    this.getCashList();
   },
 	methods:{
     onClickLeft(){
@@ -78,6 +98,20 @@ export default {
     },
     afterRead(file){
       this.file = file.file;
+    },
+    getCashList(){
+      let obj = {
+        token: this.dataInfo.token
+      }
+      this.$axios.post(Api.serviceApi.getCashList + splitParam(obj)).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          this.dataList = res.data.data;
+        }
+			},(err) => {
+        this.$toast('网络繁忙，请重试');
+      })
     },
     submit(){
       if(!this.value){
@@ -115,6 +149,7 @@ export default {
           this.$toast(res.data.msg);
         }else{
           toast.clear();
+          this.getCashList();
           this.$toast('提交成功,待工作人员审核');
         }
 			},(err) => {
@@ -152,5 +187,12 @@ export default {
 }
 .content .tip{
   color: red;
+}
+.no-content{
+  color: #999999;
+  text-align: center;
+  font-weight: 400;
+  font-size: 10px;
+  margin-top: 30px;
 }
 </style>

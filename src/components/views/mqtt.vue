@@ -61,7 +61,7 @@ export default {
     },
     // mqtt连接失败
     clientFailure (e) {
-      this.$emit('messageArrived', "{type:7}")
+      this.$emit('messageArrived', "{type:8}")
     },
     // 连接丢失
     onConnectionLost (responseObject) {
@@ -73,6 +73,7 @@ export default {
     },
     // 接收消息事件
     onMessageArrived (message) {
+      console.log(message)
       this.$emit('messageArrived', message.payloadString)
     },
     // 断开mqtt连接

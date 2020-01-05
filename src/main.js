@@ -22,7 +22,7 @@ import { Toast } from 'vant';
 
 Vue.use(Vant);
 
-Vue.use(Toast); 
+Vue.use(Toast);
 
 Vue.prototype.$axios = axios;
 
@@ -35,24 +35,27 @@ router.beforeEach((to, from, next) => {
   // return;
 
   Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
+  if(to.name === 'Index' && !JSON.parse(localStorage.getItem('data'))){
+    router.push({name: 'login'})
+  }
 
   //添加请求拦截器
   axios.interceptors.request.use(function (config) {
     return config
   }),function (error) {
-    
+
     return Promise.reject(error)
   }
   // 添加响应拦截器
   axios.interceptors.response.use(function (response) {
 
     if(response.data.code === '1001' ){
-      console.log(Vue)
+
       router.replace({
         path: '/login',
         query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
       })
-
+      localStorage.removeItem('data');
       setTimeout( () => {
         Toast('登录信息已失效，请重新登录！');
       })
@@ -64,12 +67,6 @@ router.beforeEach((to, from, next) => {
   　return Promise.reject(error)
   });
   next();
-  // if (to.path === '/') {
-  //   next();
-  // } else {
-    
-  //   next();
-  // }
 });
 /* eslint-disable no-new */
 new Vue({

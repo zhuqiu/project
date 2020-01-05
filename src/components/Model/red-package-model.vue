@@ -20,7 +20,7 @@
             </div>
 		        <div class="selected-title" v-if="unlucky === 2">
 		          <img src="../../../static/img/img02.png" alt="">
-		          <span>踩雷了！-16金币</span>
+		          <span>{{tip}}</span>
 		        </div>
 		      </div>
 		    </div>
@@ -42,7 +42,6 @@
 		            <img src="../../../static/img/img02.png" alt="" v-if="item.unlucky ===2">
 		          </div>
 		        </li>
-
 		      </ul>
 		    </div>
 		  </div>
@@ -65,14 +64,15 @@ export default {
       data:'',
       list: [],
       title: null,
+      tip: null,
       unlucky: 1
     }
   },
   methods:{
   	show(data) {
       this.data = data;
-
       this.title = null;
+      this.tip = null;
       this.visible = true;
       this.showOpen = true;
       this.unlucky = 1;
@@ -86,11 +86,31 @@ export default {
         }
       })
         this.title = data.hasRedTitle;
+        this.tip = data.hasSelectTip;
         this.handleGetRedPackage(data.hasNum)
       }
     },
     showDetail(){
       this.handleGetRedPackage(0)
+    },
+    getMessageAudio(){
+
+      const src = 'http://pic.ibaotu.com/17/97/23/42f888piCquQ.mp3';
+      // 初始化Aduio
+      let audio = new Audio();
+
+      let playPromise;
+      audio.src = src;
+
+      playPromise = audio.play();
+
+      if (playPromise) {
+        playPromise.then(() => {
+            // 音频加载成功
+        }).catch((e) => {
+            // 音频加载失败
+        });
+      }
     },
     handleGetRedPackage(num){
       let obj = {
@@ -106,7 +126,9 @@ export default {
           this.$toast(res.data.msg);
         }else{
           this.showOpen = false;
-          // debugger
+          if(num === 0){
+            this.getMessageAudio();
+          }
           if(res.data.data.title){
             this.title = res.data.data.title;
             this.list = res.data.data.recordList;
@@ -119,7 +141,8 @@ export default {
               id: this.data.redNum,
               length: this.list.length,
               list: res.data.data.recordList,
-              title: res.data.data.title
+              title: res.data.data.title,
+              tip: res.data.data.msg
             }
             this.$emit('redOpen', obj);
           }

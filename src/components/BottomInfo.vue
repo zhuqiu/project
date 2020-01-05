@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <van-row class="operation-item">
-      <van-col span="2">
+      <van-col span="2" @click="rechargeService">
         <div class="help-info">
           <van-icon name="service-o" size="20"/>
         </div>
@@ -30,15 +30,15 @@
             <span>客服在线</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="rechargeService">
           <div class="item-detail">
             <van-icon name="manager-o" size="30"/>
             <span>充值客服</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="copeID">
           <div class="item-detail">
-            <div style="height:30px;line-height:30px;font-size: 20px;color:#07c160;">{{ dataInfo.id }}</div>
+            <div style="height:30px;line-height:30px;font-size: 20px;color:#07c160;">{{ dataInfo.inviteCode }}</div>
             <span>复制我的ID</span>
           </div>
         </van-col>
@@ -48,31 +48,33 @@
             <span>玩法介绍</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="recordDetail">
           <div class="item-detail">
             <van-icon name="label-o" size="30"/>
             <span>记录明细</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <van-col span="6" @click="commission">
           <div class="item-detail">
             <van-icon name="chart-trending-o" size="30"/>
             <span>推广管理</span>
           </div>
         </van-col>
-        <van-col span="6" @click="">
+        <van-col span="6" @click="transfer">
           <div class="item-detail">
             <van-icon name="exchange" size="30"/>
             <span>金币互转</span>
           </div>
         </van-col>
-        <van-col span="6">
+        <!-- <van-col span="6">
           <div class="item-detail">
             <van-icon name="refund-o" size="30"/>
             <span>佣金福利</span>
           </div>
-        </van-col>
+        </van-col> -->
       </van-row>
+
+      <input id="copy_content" type="text" value=""  style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;"/>
     </div>
 
     <send-red-package-model ref="sendRedPackage"></send-red-package-model>
@@ -82,6 +84,12 @@
     <online-service-model ref="onlineService"></online-service-model>
 
     <game-introduce-model ref="gameIntroduce"></game-introduce-model>
+
+    <account-details-model ref="accountDetail"></account-details-model>
+
+    <commission-info-model ref="commission"></commission-info-model>
+
+    <money-transfer-account-model ref="transfer"></money-transfer-account-model>
   </div>
 </template>
 
@@ -95,13 +103,22 @@ import onlineServiceModel from './Model/online-service-model.vue';
 
 import gameIntroduceModel from './Model/game-introduce-model.vue';
 
+import accountDetailsModel from './Model/account-details-model.vue';
+
+import commissionInfoModel from './Model/commission-info-model.vue';
+
+import moneyTransferAccountModel from './Model/money-transfer-account-model.vue';
+
 export default {
   name: 'bottom-info',
    components:{
-     sendRedPackageModel:sendRedPackageModel,
-     robotDepositModel:robotDepositModel,
-     onlineServiceModel:onlineServiceModel,
-     gameIntroduceModel:gameIntroduceModel
+     sendRedPackageModel,
+     robotDepositModel,
+     onlineServiceModel,
+     gameIntroduceModel,
+     accountDetailsModel,
+     commissionInfoModel,
+     moneyTransferAccountModel
   },
   data () {
     return {
@@ -123,6 +140,33 @@ export default {
     },
     gameIntroduce(){
       this.$refs.gameIntroduce.show();
+    },
+    rechargeService(){
+      this.$toast('该功能正在努力开发中');
+    },
+    copeID(){
+      //获取点击的值
+      var clickContent = this.dataInfo.inviteCode;
+      //获取要赋值的input的元素
+      var inputElement =  document.getElementById("copy_content");
+      //给input框赋值
+      inputElement.value = clickContent;
+      //选中input框的内容
+      inputElement.select();
+      // 执行浏览器复制命令
+      document.execCommand("Copy");
+
+      this.$toast('复制成功');
+    },
+    recordDetail(){
+      this.$refs.accountDetail.show();
+    },
+    commission(){
+      this.$toast('该功能正在努力开发中');
+      //this.$refs.commission.show()
+    },
+    transfer(){
+      this.$refs.transfer.show()
     }
   }
 }

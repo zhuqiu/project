@@ -1,15 +1,17 @@
 <template>
   <div class="container">
     <div class="top-info">
-      <top-info ref="topinfo"></top-info>
+      <top-info ref="topinfo" @infoClick="onInfoClick"></top-info>
     </div>
     <div class="content-info">
       <content-info ref="contentinfo" @contentDataChange="onContentDataChange"></content-info>
     </div>
     <div class="bottom-info footer">
-      <bottom-info></bottom-info>
+      <bottom-info ref="bottominfo"></bottom-info>
     </div>
+    <van-action-sheet v-model="show" :actions="actions" @select="onSelect" />
   </div>
+
 </template>
 
 <script>
@@ -29,11 +31,40 @@ export default {
   },
   data() {
     return {
+      show: false,
+      actions: [{
+        name: '更换头像'
+      },{
+        name: '退出登录'
+      }]
     }
+  },
+  mounted(){
+    this.$nextTick(() => {
+      let that = this;
+      let ele = document.querySelector('.content-info');
+      ele.addEventListener('touchstart',function(){
+        if(that.$refs.bottominfo.show){
+          that.$refs.bottominfo.show = false
+        }
+      })
+    })
   },
   methods:{
     onContentDataChange(data){
       this.$refs.topinfo.change(data);
+    },
+    onInfoClick(){
+      this.show = true;
+    },
+    onSelect(item){
+      if(item.name === '退出登录'){
+        this.$router.push({name:'login'});
+        this.$toast('退出成功');
+        localStorage.removeItem('data');
+      }else if(item.name === '更换头像'){
+        this.$toast('该功能正在努力开发中');
+      }
     }
   }
 }
@@ -53,7 +84,7 @@ export default {
     height: 40px;
     line-height: 43px;
     z-index: 1;
-    border-bottom: 1px solid #999999;
+    border-bottom: 1px solid #eeeeee;
   }
   .content-info{
     position: absolute;
@@ -73,6 +104,8 @@ export default {
     /* box-shadow: 0 8px 12px #ebedf0; */
     background: #fff;
   }
-
+  .van-action-sheet__name{
+    font-size: 14px;
+  }
 
 </style>

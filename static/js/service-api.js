@@ -21,8 +21,28 @@ export default{
     getCash: remoteUrl + '/data/api/cash',
 
     //获取支付地址
-    getPayUrl: remoteUrl + '/data/api/getPayUrl'
+    getPayUrl: remoteUrl + '/data/api/getPayUrl',
 
+    //获取提现明细
+    getCashList: remoteUrl + '/data/api/cashList',
+
+    //充值明细
+    getRechargeList: remoteUrl + '/data/api/chongzhiList',
+
+    //游戏明细
+    getGameList: remoteUrl + '/data/api/gameList',
+
+    //佣金明细
+    getRewordList: remoteUrl + '/data/api/rewardList',
+
+    //金币互转
+    trasfer:  remoteUrl + '/data/api/trasfer',
+
+    //设置自动抢红包
+    getRedMoney: remoteUrl + '/data/api/setAutoQiangbao',
+
+    //设置自动发红包
+    putRedMoney: remoteUrl + '/data/api/setAutoFabao'
 	}
 }
 

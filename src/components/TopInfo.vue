@@ -3,7 +3,7 @@
     <van-row>
       <van-col span="12">
         <div class="person-info">
-          <div class="info-img">
+          <div class="info-img" @click="infoPop">
             <img :src="src" alt="">
           </div>
           <div class="con-info">
@@ -30,6 +30,8 @@
       </van-col>
     </van-row>
 
+
+
     <!-- 充值弹框 -->
     <recharge-model ref="recharge"></recharge-model>
 
@@ -47,19 +49,20 @@ import extensionModel from './Model/extension-model.vue'
 export default {
   name: 'top-info',
    components:{
-     rechargeModel:rechargeModel,
-     extensionModel:extensionModel
+     rechargeModel,
+     extensionModel
   },
   data () {
     return {
-      src:'',
-      name:'',
+      src: '',
+      name: '',
       amout: null
     }
   },
   created(){
     this.name = this.dataInfo.inviteCode;
     this.amout = this.dataInfo.money;
+    localStorage.setItem('amout', this.amout);
     this.src = this.dataInfo.headImg ? this.dataInfo.headImg : '.././static/img/LC_icon_user_group_fill.png';
   },
   methods:{
@@ -74,6 +77,10 @@ export default {
     },
     change(data){
       this.amout = data.money;
+      localStorage.setItem('amout', this.amout)
+    },
+    infoPop(){
+      this.$emit('infoClick');
     }
   }
 }

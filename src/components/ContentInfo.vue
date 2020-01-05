@@ -69,6 +69,7 @@
         </van-row>
       </li>
     </ul>
+
     <!--红包详情弹框-->
     <red-package-model ref="redPackage" @redOpen="onRedOpen"></red-package-model>
 
@@ -92,16 +93,16 @@ import mqtt from './views/mqtt'
 export default {
   name: 'content-info',
   components:{
-    redPackageModel: redPackageModel,
-    accountDetailsModel: accountDetailsModel,
-    mqtt:mqtt
+    redPackageModel,
+    accountDetailsModel,
+    mqtt
   },
   data() {
     return {
       show:true,
       isLoading: false,
       count: 0,
-      noticeText: '佣金满100可找客服领取28彩金，右上角推广可获高额佣金，充值或提现异常请联系客服。',
+      noticeText: '',
       listData: [],
       clientParams: {
         hostname: '',
@@ -114,7 +115,7 @@ export default {
     }
   },
   mounted() {
-
+    this.noticeText = this.dataInfo.ads;
     this.clientParams.hostname =  this.dataInfo.mqttIp; //'47.106.88.215';
     this.clientParams.port = this.dataInfo.mqttPort; //9000;
     this.clientParams.topic = this.dataInfo.mqttTopic; //'user2/3';
@@ -127,6 +128,8 @@ export default {
     }
 
     this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
+
+    this.gotoBottom();
   },
   beforeDestroy () {
     this.$refs.mqtt.disconnect() // 关闭页面断开mqtt连接
@@ -134,6 +137,19 @@ export default {
   methods:{
     redPackageClick(item){
       this.$refs.redPackage.show(item);
+    },
+    gotoBottom(){
+      //内容滚动到最底部
+      this.$nextTick(() =>{
+        let ele = document.querySelector('.content-info');
+        if(ele.scrollHeight > ele.clientHeight) {
+          //设置滚动条到最底部
+          setTimeout(() =>{
+            ele.scrollTop = ele.scrollHeight;
+          },200)
+
+        }
+      })
     },
     // 接收mqtt消息
     onMessageArrived (msg) {
@@ -153,25 +169,17 @@ export default {
               data.data.status = false;
             }else{
               data.data.status = true;
+              this.getMessageAudio();
             }
             data.data.hasList = []; //已抢红包用户提示
             data.data.hasStatus = false; //该红包是否已抢过
             data.data.hasNum = 0; //当前已抢红包人数
             data.data.recordList = []; //当前已抢红包用户记录数
             data.data.hasRedTitle = ''; //已抢到的红包提示
+            data.data.hasSelectTip = '';
             this.listData.push(data.data);
 
-            //内容滚动到最底部
-            this.$nextTick(() =>{
-              let ele = document.querySelector('.content-info');
-              if(ele.scrollHeight > ele.clientHeight) {
-                //设置滚动条到最底部
-                setTimeout(() =>{
-                  ele.scrollTop = ele.scrollHeight;
-                },200)
-
-              }
-            })
+            this.gotoBottom();
 
             localStorage.setItem('list',JSON.stringify(this.listData));
           }
@@ -224,11 +232,15 @@ export default {
             this.$emit('contentDataChange',obj);
           }
           break;
-        //连接失败
+        // 用户收入佣金
         case 7:
+          if(data.data.uid === this.dataInfo.uid){
+            this.$toast(data.data.msg);
+          }
+          break;
+        case 8:
           this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
           break;
-
       }
     },
     onRedOpen(data){
@@ -239,8 +251,29 @@ export default {
           l.hasNum = data.length;
           l.recordList = data.list;
           l.hasRedTitle = data.title;
+          l.hasSelectTip = data.tip;
         }
       })
+    },
+    getMessageAudio(){
+      const src = '../../../static/img/9478.wav';
+      // 初始化Aduio
+      var audio = new Audio();
+      var playPromise;
+      audio.src = src;
+      playPromise = audio.play();
+      if (playPromise) {
+        playPromise.then(() => {
+            // 音频加载成功
+            // 音频的播放需要耗时
+            setTimeout(() => {
+                // 后续操作
+                console.log("done.");
+            }, audio.duration * 1000); // audio.duration 为音频的时长单位为秒
+        }).catch((e) => {
+            // 音频加载失败
+        });
+      }
     }
   }
 }
@@ -251,6 +284,9 @@ export default {
   padding-bottom: 10px;
   height: 100%;
   width: 100%;
+  /* 解决ios中偶现无法滚动的情况 */
+  -webkit-overflow-scrolling: touch;
+  min-height:101%;
 }
 .item-info{
   margin-top: 14px;

@@ -4,8 +4,8 @@
       <tr>
         <th v-for="(item,index) in row" :key="index">{{ item.name }}</th>
       </tr>
-      <tr>
-        <td v-for="(item,index) in data" :key="index">{{ item.name }}</td>
+      <tr v-for="(item,index) in data" :key="index">
+        <td v-for="(itemRow,indexRow) in row" :key="indexRow">{{ item[itemRow.slot] }}</td>
       </tr>
     </table>
 	</div>
@@ -14,7 +14,7 @@
 <script>
 export default {
   name: 'common-table',
-  
+
   props: {
     data: {
       type: Array,
@@ -27,13 +27,16 @@ export default {
   },
 	data() {
 		return {
-			
+
 		}
-	},
+  },
+  mounted(){
+
+  },
 	methods:{
-		
+
 	}
-	
+
 }
 </script>
 

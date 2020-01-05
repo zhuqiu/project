@@ -21,7 +21,7 @@
               @click="payClick(item,index)"
               :class="{ active: index === curindex }"
             >
-              充值 {{item.number}} 元
+              充值 {{item.number}} 元 测试用
             </li>
           </ul>
         </div>
@@ -44,22 +44,24 @@ export default {
       checked:true,
       curindex: null,
       dataList:[{
-        number: 30
-        },{
-        number: 50
-        },{
-        number: 100
-        },{
-        number: 300
-        },{
-        number: 500
-        },{
-        number: 1000
-        },{
-        number: 2000
-        },{
-        number: 3000
-        }]
+        number: 1
+        }
+        // ,{
+        // number: 50
+        // },{
+        // number: 100
+        // },{
+        // number: 300
+        // },{
+        // number: 500
+        // },{
+        // number: 1000
+        // },{
+        // number: 2000
+        // },{
+        // number: 3000
+        // }
+        ]
 		}
 	},
 	methods:{

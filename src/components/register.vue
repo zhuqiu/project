@@ -10,6 +10,14 @@
         required
       />
       <van-field
+        v-model="formData.inviteCode"
+        type="number"
+        label="邀请码"
+        placeholder="邀请码"
+        :error-message="errorData.errorInviteCode"
+        required
+      />
+      <van-field
         v-model="formData.loginName"
         type="number"
         label="手机号"
@@ -78,14 +86,17 @@ export default {
       	loginPassword: '',
       	passwordagain: '',
         phoneCode: '',
-        nickname: ''
+        nickname: '',
+        inviteCode: ''
       },
       errorData: {
       	errorName: '',
       	errorLoginPassword: '',
       	errorPasswordagain: '',
         errPhoneCode: '',
-        errorNickName: ''
+        errorNickName: '',
+        errorInviteCode: ''
+
       },
       sendText: '获取验证码',
       disabled: false
@@ -99,7 +110,14 @@ export default {
 				return
       }
       this.errorData.errorNickName = '';
-      
+
+      this.errorData.errorInviteCode = '';
+			if(this.formData.inviteCode === ''){
+				this.errorData.errorInviteCode = '请输入邀请码';
+				return
+      }
+      this.errorData.errorInviteCode = '';
+
 			this.errorData.errorName = '';
 			if(this.formData.loginName === ''){
 				this.errorData.errorName = '请输入手机号';
