@@ -78,6 +78,7 @@ export default {
           this.$toast(res.data.msg);
         }else{
           localStorage.setItem('data',JSON.stringify(res.data.data))
+          localStorage.setItem('amout',res.data.data.money)
           this.$toast('登录成功');
           setTimeout(() =>{
             this.$router.push({name:'Index'});

@@ -61,8 +61,7 @@ export default {
   },
   created(){
     this.name = this.dataInfo.inviteCode;
-    this.amout = this.dataInfo.money;
-    localStorage.setItem('amout', this.amout);
+    this.amout = localStorage.getItem('amout');
     this.src = this.dataInfo.headImg ? this.dataInfo.headImg : '.././static/img/LC_icon_user_group_fill.png';
   },
   methods:{
@@ -70,7 +69,7 @@ export default {
       this.$refs.recharge.show();
     },
     extract(){
-      this.$router.push({name: 'extractcenter', params: {num: this.amout}})
+      this.$router.push({name: 'extractcenter'})
     },
     extension(){
       this.$refs.extension.show();
@@ -115,7 +114,8 @@ export default {
   font-size: 10px;
 }
 .person-info .con-info .info-name span{
-  color: #07c160;
+  color: #1989fa;
+  font-weight: 900;
 }
 .person-info .con-info .info-amout{
   text-align: left;

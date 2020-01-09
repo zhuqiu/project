@@ -38,7 +38,7 @@
         </van-col>
         <van-col span="6" @click="copeID">
           <div class="item-detail">
-            <div style="height:30px;line-height:30px;font-size: 20px;color:#07c160;">{{ dataInfo.inviteCode }}</div>
+            <div style="height:29px;line-height:29px;font-size: 20px;color:#07c160;">{{ dataInfo.inviteCode }}</div>
             <span>复制我的ID</span>
           </div>
         </van-col>

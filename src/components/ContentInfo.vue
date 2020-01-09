@@ -3,6 +3,7 @@
     <div class="notice">
       <van-notice-bar
         :text="noticeText"
+        color="#1989fa"
       />
     </div>
     <ul class="list-item">
@@ -243,6 +244,7 @@ export default {
           if(data.data.uid === this.dataInfo.uid){
             let obj = {};
             obj.money = data.data.money;
+            localStorage.setItem('amout',data.data.money)
             this.$emit('contentDataChange',obj);
           }
           break;
@@ -413,7 +415,7 @@ export default {
 }
 .notice{
   position: fixed;
-  top: 28px;
+  top: 30px;
   right: 0;
   left: 0;
   z-index: 10;

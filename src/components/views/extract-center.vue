@@ -57,7 +57,7 @@
             <span>可用余额</span>
           </van-col>
           <van-col span="16" class="content">
-            <div class="money">{{$route.params.num}}</div>
+            <div class="money">{{ amout }}</div>
             <span class="tip">提现自动扣除3%手续费</span>
           </van-col>
         </van-row>
@@ -139,6 +139,7 @@ export default {
 	data() {
 		return {
       active:0,
+      amout:0,
       value: null,
       fileList: [],
       file: undefined,
@@ -160,6 +161,7 @@ export default {
   },
   mounted(){
     this.getCashList();
+    this.amout = localStorage.getItem('amout');
   },
 	methods:{
     onClickLeft(){
@@ -187,7 +189,7 @@ export default {
         this.$toast('请输入提现的金额');
         return;
       }
-      if(this.value > this.$route.params.num){
+      if(Number(this.value) > Number(this.amout)){
         this.$toast('可用余额不足');
         return;
       }
@@ -219,6 +221,7 @@ export default {
         }else{
           toast.clear();
           this.getCashList();
+          this.amout -= this.value;
           this.$toast('提交成功,待工作人员审核');
         }
 			},(err) => {
