@@ -36,7 +36,7 @@
 
 import Api from '../../static/js/service-api';
 
-import { splitParam }  from'../../static/js/utils'
+import { splitParam }  from'../../static/js/utils';
 
 export default {
   name: 'login',

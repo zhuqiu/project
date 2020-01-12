@@ -20,9 +20,17 @@ import '../static/js/mqtt.js'
 
 import { Toast } from 'vant';
 
+// 引入组件
+// import WeuiVue from 'weui-vue'
+
+// 引入样式
+// import 'weui-vue/weui.css'
+
 Vue.use(Vant);
 
 Vue.use(Toast);
+
+// Vue.use(WeuiVue);
 
 Vue.prototype.$axios = axios;
 
@@ -38,7 +46,7 @@ router.beforeEach((to, from, next) => {
   }
 
   if(to.name === 'Index' && !JSON.parse(localStorage.getItem('data'))){
-    router.push({name: 'login'})
+    router.push({name: 'wxlogin'})
   }
 
   //添加请求拦截器
@@ -52,15 +60,11 @@ router.beforeEach((to, from, next) => {
   axios.interceptors.response.use(function (response) {
 
     if(response.data.code === '1001' ){
-
       router.replace({
-        path: '/login',
+        path: '/wxlogin',
         query: {redirect: to.fullPath}  // 将跳转的路由path作为参数，登录成功后跳转到该路由
       })
       localStorage.removeItem('data');
-      setTimeout( () => {
-        Toast('登录信息已失效，请重新登录！');
-      })
     }
   　// 对响应数据做点什么
   　return response

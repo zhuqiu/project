@@ -34,9 +34,11 @@ export default {
       show: false,
       actions: [{
         name: '更换头像'
-      },{
-        name: '退出登录'
-      }]
+      }
+      // ,{
+      //   name: '退出登录'
+      // }
+      ]
     }
   },
   mounted(){

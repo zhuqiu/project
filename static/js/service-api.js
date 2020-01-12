@@ -45,7 +45,19 @@ export default{
     getRedMoney: remoteUrl + '/data/api/setAutoQiangbao',
 
     //设置自动发红包
-    putRedMoney: remoteUrl + '/data/api/setAutoFabao'
+    putRedMoney: remoteUrl + '/data/api/setAutoFabao',
+
+    //判断微信用户是否登录
+    checkUserLogin: remoteUrl + '/data/api/checkUserLogin',
+
+    //微信用户登录
+    wxLogin: remoteUrl + '/data/api/wxLogin',
+
+    //获取微信用户信息
+    getWXurl: remoteUrl + '/data/api/getWXurl',
+
+    //获取微信分享参数
+    initWXJSInterface: remoteUrl + '/data/api/initWXJSInterface'
 	}
 }
 
