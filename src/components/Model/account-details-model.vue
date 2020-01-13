@@ -27,7 +27,7 @@
 												<div>{{ item.gameTime }}</div>
 											</div>
 											<div class="detail-content-item">
-												<div>描述</div>
+												<div>收益</div>
 												<div>{{ item.desc }}</div>
 											</div>
 
