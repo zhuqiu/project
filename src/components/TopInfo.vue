@@ -30,13 +30,13 @@
       </van-col>
     </van-row>
 
-
-
     <!-- 充值弹框 -->
     <recharge-model ref="recharge"></recharge-model>
 
     <!-- 推广弹框 -->
     <extension-model ref="extension"></extension-model>
+
+    <wx-share ref="wxshare"></wx-share>
   </div>
 </template>
 
@@ -46,11 +46,14 @@ import rechargeModel from './Model/recharge-model.vue'
 
 import extensionModel from './Model/extension-model.vue'
 
+import wxShare from './views/wx-share.vue'
+
 export default {
   name: 'top-info',
    components:{
      rechargeModel,
-     extensionModel
+     extensionModel,
+     wxShare
   },
   data () {
     return {
@@ -63,6 +66,10 @@ export default {
     this.name = this.dataInfo.inviteCode;
     this.amout = localStorage.getItem('amout');
     this.src = this.dataInfo.headImg ? this.dataInfo.headImg : '.././static/img/LC_icon_user_group_fill.png';
+    this.$nextTick( () =>{
+      this.$refs.wxshare.initWxShare()
+    })
+
   },
   methods:{
     recharge(){

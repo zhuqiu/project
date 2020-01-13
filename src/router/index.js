@@ -6,6 +6,8 @@ import Index from '@/components/Index.vue'
 
 import login from '@/components/login.vue'
 
+import wxlogin from '@/components/wxLogin.vue'
+
 import register from '@/components/register.vue'
 
 import rechargecenter from '@/components/views/recharge-center.vue'
@@ -30,6 +32,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },
+    {
+      path: '/wxlogin',
+      name: 'wxlogin',
+      component: wxlogin
     },
     {
       path: '/register',
