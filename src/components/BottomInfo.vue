@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <van-row class="operation-item">
-      <van-col span="2" @click="rechargeService">
+      <van-col span="2" @click="onlineService">
         <div class="help-info">
           <van-icon name="service-o" size="20"/>
         </div>
@@ -30,12 +30,7 @@
             <span>客服在线</span>
           </div>
         </van-col>
-        <van-col span="6" @click="rechargeService">
-          <div class="item-detail">
-            <van-icon name="manager-o" size="30"/>
-            <span>充值客服</span>
-          </div>
-        </van-col>
+        
         <van-col span="6" @click="copeID">
           <div class="item-detail">
             <div style="height:29px;line-height:29px;font-size: 20px;color:#07c160;">{{ dataInfo.inviteCode }}</div>
@@ -66,10 +61,16 @@
             <span>金币互转</span>
           </div>
         </van-col>
+        <van-col span="6" @click="robotDeposit">
+          <div class="item-detail">
+            <van-icon name="manager-o" size="30"/>
+            <span>机器人设置</span>
+          </div>
+        </van-col>
         <!-- <van-col span="6">
           <div class="item-detail">
             <van-icon name="refund-o" size="30"/>
-            <span>佣金福利</span>
+            <span>群设置</span>
           </div>
         </van-col> -->
       </van-row>
@@ -140,9 +141,6 @@ export default {
     },
     gameIntroduce(){
       this.$refs.gameIntroduce.show();
-    },
-    rechargeService(){
-      this.$toast('该功能正在努力开发中');
     },
     copeID(){
       //获取点击的值

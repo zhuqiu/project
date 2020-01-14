@@ -6,7 +6,7 @@
 		  get-container="body"
 		  class="common-model-class"
 		>
-			<div class="common-model-title">321321312</div>
+			<div class="common-model-title">推广管理</div>
 			<div class="common-model-content">
 				<van-panel title="标题">
 				  <div>内容</div>
