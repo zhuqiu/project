@@ -23,7 +23,11 @@ export default {
   methods:{
     initWxShare(){
       let obj = {
-        url: 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxc52fcc3511f65d1d&redirect_uri=http%3a%2f%2fred.zero-yun.cn%2flogin.html&response_type=code&scope=snsapi_userinfo&state=123'
+        url: ''
+      }
+      url = localStorage.getItem('wxurl');
+      if(url){
+        obj.url = decodeURIComponent(url.split('#')[0]);
       }
       this.$axios.get(Api.serviceApi.initWXJSInterface + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){

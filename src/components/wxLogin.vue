@@ -67,6 +67,7 @@ export default {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
+          localStorage.setItem('wxurl',res.data.data);
           window.location.href = res.data.data;
         }
 			})
