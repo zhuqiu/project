@@ -38,7 +38,7 @@
 		            </div>
 		          </div>
 		          <div class="item-right">
-		            <div class="item-money">{{ item.money }} 金币</div>
+		            <div class="item-money">{{ item.oriMoney }} 金币</div>
 		            <img src="../../../static/img/img02.png" alt="" v-if="item.unlucky ===2">
 		          </div>
 		        </li>
@@ -70,10 +70,14 @@ export default {
   },
   methods:{
   	show(data) {
+      // debugger
       this.data = data;
       if(!data.status){
         this.title = null;
         this.tip = null;
+      }else{
+        this.title = data.hasRedTitle;
+        this.tip = data.hasSelectTip;
       }
       this.visible = true;
       this.showOpen = true;
@@ -87,11 +91,6 @@ export default {
             this.unlucky = item.unlucky;
           }
         })
-        if(data.status){
-          this.title = data.hasRedTitle;
-          this.tip = data.hasSelectTip;
-        }
-
         this.handleGetRedPackage(data.hasNum)
       }
     },
@@ -100,7 +99,7 @@ export default {
     },
     getMessageAudio(){
 
-      const src = 'http://pic.ibaotu.com/17/97/23/42f888piCquQ.mp3';
+      const src = '../../../static/img/666.mp3';
       // 初始化Aduio
       let audio = new Audio();
 
@@ -129,6 +128,12 @@ export default {
       this.$axios.post(Api.serviceApi.getRedPackage + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
+          if(res.data.code === '1' || res.data.msg === '红包已过期'){
+            let obj = {
+              id: this.data.redNum
+            }
+            this.$emit('redOpen', obj,true);
+          }
         }else{
           this.showOpen = false;
           if(num === 0 && this.data.status){
@@ -148,10 +153,11 @@ export default {
               id: this.data.redNum,
               length: this.list.length,
               list: res.data.data.recordList,
+              robbedBao: res.data.data.red.robbedBao,
               title: this.data.status ? res.data.data.title : '',
               tip: this.data.status ? res.data.data.msg : ''
             }
-            this.$emit('redOpen', obj);
+            this.$emit('redOpen', obj,false);
           }
         }
 			})

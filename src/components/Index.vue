@@ -35,9 +35,9 @@ export default {
       actions: [{
         name: '更换头像'
       }
-      // ,{
-      //   name: '退出登录'
-      // }
+      ,{
+        name: '退出登录'
+      }
       ]
     }
   },
@@ -57,15 +57,15 @@ export default {
       this.$refs.topinfo.change(data);
     },
     onInfoClick(){
-      this.show = true;
+      //this.show = true;
     },
     onSelect(item){
       if(item.name === '退出登录'){
-        this.$router.push({name:'login'});
+        this.$router.push({name:'wxlogin'});
         this.$toast('退出成功');
         localStorage.removeItem('data');
       }else if(item.name === '更换头像'){
-        this.$toast('该功能正在努力开发中');
+        //this.$toast('该功能正在努力开发中');
       }
     }
   }

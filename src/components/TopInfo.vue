@@ -7,7 +7,7 @@
             <img :src="src" alt="">
           </div>
           <div class="con-info">
-            <div class="info-name">账号：<span>{{ name }}</span></div>
+            <div class="info-name">ID：<span>{{ name }}</span></div>
             <div class="info-amout">金币：{{ amout }} </div>
           </div>
         </div>
@@ -82,7 +82,7 @@ export default {
       this.$refs.extension.show();
     },
     change(data){
-      this.amout = data.money.toFixed(2);
+      this.amout = Number(data.money).toFixed(2);
       localStorage.setItem('amout', this.amout)
     },
     infoPop(){

@@ -95,7 +95,7 @@
 							</li>
 						</ul>
 					</van-tab>
-					<van-tab title="佣金明细">
+					<!-- <van-tab title="佣金明细">
 						<div class="no-content" v-if="welfareList.length === 0">暂无佣金明细</div>
             <ul class="item-list" v-else>
 							<li v-for="(item, index) in welfareList" :key="index">
@@ -121,7 +121,7 @@
 								</common-column>
 							</li>
 						</ul>
-					</van-tab>
+					</van-tab> -->
 				</van-tabs>
 			</div>
 		</van-popup>
@@ -157,7 +157,7 @@ export default {
     this.getList('getGameList','gameList');
     this.getList('getRechargeList','rechargeList');
     this.getList('getCashList','extractList');
-    this.getList('getRewordList','welfareList');
+    // this.getList('getRewordList','welfareList');
   },
 	methods:{
 		show(){

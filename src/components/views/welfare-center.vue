@@ -1,0 +1,167 @@
+<template>
+	<div>
+    <div class="welfare-center">
+      <van-nav-bar
+        title="推广明细"
+        left-text="返回"
+        left-arrow
+        @click-left="onClickLeft"
+      />
+      <div class="welfare-content">
+        <van-cell title="佣金金额" :value="rewardTotal"/>
+        <van-divider :style="{ color: 'red'}">团队人数</van-divider>
+        <ul class="item-list">
+          <li v-for="(item, index) in teamList" :key="index">
+            <common-column>
+              <div class="account-detail-content">
+                <div class="account-detail-content-top">
+                  <div class="detail-content-item">
+                    <div>{{item.title}}</div>
+                    <div>{{item.number}}</div>
+                  </div>
+                </div>
+                <!-- <div class="account-detail-content-bottom">
+                  <div class="detail-content-item">
+                    <div>订单号</div>
+                    <div>11</div>
+                  </div>
+                </div> -->
+              </div>
+            </common-column>
+          </li>
+        </ul>
+        <van-divider :style="{ color: 'red'}">佣金明细</van-divider>
+        <div class="no-content" v-if="welfareList.length === 0">暂无佣金明细</div>
+        <ul class="item-list">
+          <li v-for="(item, index) in welfareList" :key="index">
+            <common-column>
+              <div class="account-detail-content">
+                <div class="account-detail-content-top">
+                  <div class="detail-content-item">
+                    <div>佣金金额</div>
+                    <div>{{ item.money }}</div>
+                  </div>
+                </div>
+                <div class="account-detail-content-bottom">
+                  <div class="detail-content-item">
+                    <div>佣金说明</div>
+                    <div>{{ item.remark }}</div>
+                  </div>
+                  <div class="detail-content-item">
+                    <div>获得时间</div>
+                    <div>{{ item.time }}</div>
+                  </div>
+                </div>
+              </div>
+            </common-column>
+          </li>
+        </ul>
+        <div style="margin:10px;" v-if="welfareList.length >= 10">
+          <van-button type="primary" :loading="loading" size="mini" @click="loadMore">加载更多</van-button>
+        </div>
+      </div>
+    </div>
+	</div>
+</template>
+
+<script>
+
+import commonColumn from '../views/common-column.vue';
+
+import { splitParam }  from'../../../static/js/utils';
+
+import Api from '../../../static/js/service-api';
+
+export default {
+  name: 'welfare-center',
+  components:{
+		commonColumn: commonColumn
+	},
+	data() {
+		return {
+      teamList: [],
+      welfareList: [],
+      rewardTotal: '',
+      page: 1,
+      pageSize: 10,
+      loading: false
+		}
+  },
+  mounted(){
+    this.getRewardList();
+    let dataInfo = this.dataInfo;
+    this.rewardTotal = dataInfo.rewardTotal;
+    this.teamList = [
+      {title: '一级人数',number: dataInfo.level1count},
+      {title: '二级人数',number: dataInfo.level2count},
+      {title: '三级人数',number: dataInfo.level3count},
+      {title: '四级人数',number: dataInfo.level4count},
+      {title: '五级人数',number: dataInfo.level5count},
+      {title: '六级人数',number: dataInfo.level6count},
+      {title: '七级人数',number: dataInfo.level7count}
+    ]
+  },
+	methods:{
+    onClickLeft(){
+      this.$router.push({name: 'Index'})
+    },
+    getRewardList(){
+			let obj = {
+        page: this.page,
+        pageSize: this.pageSize,
+				token: this.dataInfo ? this.dataInfo.token : null
+			} 
+			this.$axios.post(Api.serviceApi.getRewordList + splitParam(obj) ).then((res) =>{
+				if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+					this.welfareList = res.data.data;
+        }
+        this.loading = false;
+			})
+    },
+    loadMore(){
+      this.pageSize += 10;
+      this.loading = true;
+      this.getRewardList();
+    }
+	}
+
+}
+</script>
+
+<style scoped>
+  .welfare-content{
+    padding: 0 10px;
+  }
+  .item-list li{
+    margin-bottom: 10px;
+  }
+  .account-detail-content{
+		background: #ffffff;
+		padding: 0 4px;
+	}
+	.account-detail-content-top,.account-detail-content-bottom{
+		padding-bottom: 6px;
+	}
+	.account-detail-content-top{
+		border-bottom: 1px solid #f0f3f6;
+	}
+	.detail-content-item{
+		padding: 6px 6px 0 6px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+  .van-cell__title{
+    text-align: left;
+  }
+	.no-content{
+		color: #999999;
+		text-align: center;
+		font-weight: 400;
+		font-size: 10px;
+		margin-bottom: 20px;
+	}
+</style>

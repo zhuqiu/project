@@ -58,12 +58,16 @@ export default {
       inviteCode: ''
 		}
   },
-  mounted(){
-    this.amout = localStorage.getItem('amout');
+  created(){
+    
   },
 	methods:{
 		show(){
-			this.visible = true;
+      this.visible = true;
+      this.init()
+    },
+    init(){
+      this.amout = localStorage.getItem('amout');
     },
     nextStep(){
       if(this.value === ''){

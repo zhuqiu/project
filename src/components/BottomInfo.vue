@@ -61,18 +61,42 @@
             <span>金币互转</span>
           </div>
         </van-col>
-        <van-col span="6" @click="robotDeposit">
+        <!-- <van-col span="6" @click="robotDeposit">
           <div class="item-detail">
             <van-icon name="manager-o" size="30"/>
             <span>机器人设置</span>
           </div>
-        </van-col>
-        <!-- <van-col span="6">
+        </van-col> -->
+        <!-- <van-col span="6" v-if="true" @click="findGroup">
           <div class="item-detail">
-            <van-icon name="refund-o" size="30"/>
-            <span>群设置</span>
+            <van-icon name="chat-o" size="30"/>
+            <span>查找房间</span>
           </div>
         </van-col> -->
+        <van-col span="6" @click="findGroup">
+          <div class="item-detail">
+            <van-icon name="chat-o" size="30"/>
+            <span>查找房间</span>
+          </div>
+        </van-col>
+        <van-col span="6" @click="creatGroup" v-if="!dataInfo.myRoom">
+          <div class="item-detail">
+            <van-icon name="brush-o" size="30"/>
+            <span>创建房间</span>
+          </div>
+        </van-col>
+        <van-col span="6" @click="groupSetting" v-if="dataInfo.myRoom && dataInfo.myRoom.roomNo === dataInfo.room.roomNo">
+          <div class="item-detail">
+            <van-icon name="setting-o" size="30"/>
+            <span>房间设置</span>
+          </div>
+        </van-col>
+        <van-col span="6" @click="enterRoom" v-if="dataInfo.myRoom && dataInfo.myRoom.roomNo != dataInfo.room.roomNo">
+          <div class="item-detail">
+            <van-icon name="aim" size="30"/>
+            <span>进入我的房间</span>
+          </div>
+        </van-col>
       </van-row>
 
       <input id="copy_content" type="text" value=""  style="position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;"/>
@@ -91,6 +115,13 @@
     <commission-info-model ref="commission"></commission-info-model>
 
     <money-transfer-account-model ref="transfer"></money-transfer-account-model>
+
+    <group-model ref="group"></group-model>
+
+    <group-setting-model ref="groupSetting" @change="settingChange"></group-setting-model>
+
+    <group-list-model ref="groupList" @change="onchange"></group-list-model>
+    
   </div>
 </template>
 
@@ -110,6 +141,16 @@ import commissionInfoModel from './Model/commission-info-model.vue';
 
 import moneyTransferAccountModel from './Model/money-transfer-account-model.vue';
 
+import groupModel from './Model/group-model.vue';
+
+import groupSettingModel from './Model/group-setting-model.vue';
+
+import groupListModel from './Model/group-list-model.vue';
+
+import Api from '../../static/js/service-api';
+
+import { splitParam }  from'../../static/js/utils';
+
 export default {
   name: 'bottom-info',
    components:{
@@ -119,7 +160,10 @@ export default {
      gameIntroduceModel,
      accountDetailsModel,
      commissionInfoModel,
-     moneyTransferAccountModel
+     moneyTransferAccountModel,
+     groupModel,
+     groupSettingModel,
+     groupListModel
   },
   data () {
     return {
@@ -160,11 +204,55 @@ export default {
       this.$refs.accountDetail.show();
     },
     commission(){
-      this.$toast('该功能正在努力开发中');
-      //this.$refs.commission.show()
+      this.$router.push({name: 'welfarecenter'})
     },
     transfer(){
       this.$refs.transfer.show()
+    },
+    findGroup(){
+      this.$refs.groupList.show();
+    },
+    groupSetting(){
+      // this.$router.push({name: 'groupcenter'})
+      this.$refs.groupSetting.show(this.dataInfo.myRoom,false);
+    },
+    creatGroup(){
+      this.$refs.groupSetting.show();
+    },
+    enterRoom(){
+      const data = JSON.parse(localStorage.getItem('data'));
+      let obj = {
+        roomNo: data.myRoom.roomNo,
+        token: this.dataInfo.token
+      }
+      this.$axios.post(Api.serviceApi.changeRoom + splitParam(obj) ).then((res) =>{
+        if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          this.getsyncUserInfo();
+        }
+      })
+    },
+    getsyncUserInfo(){
+      let obj = {
+        token: this.dataInfo.token
+      }
+      this.$axios.post(Api.serviceApi.getsyncUserInfo + splitParam(obj) ).then((res) => {
+			  if(res.data.code !== '0'){
+          this.$toast(res.data.msg);
+        }else{
+          localStorage.setItem('data',JSON.stringify(res.data.data)) 
+          this.dataInfo = res.data.data;
+          // this.$toast('已进入我的房间');
+          window.location.reload();
+        }
+			})
+    },
+    onchange(obj){
+      this.$refs.groupSetting.show(obj,true);
+    },
+    async settingChange(){
+      await this.getsyncUserInfo();
     }
   }
 }

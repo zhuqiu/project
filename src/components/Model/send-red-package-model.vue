@@ -44,8 +44,8 @@
               <div class="van-hairline--top"></div>
             </van-col>
             <van-col span="24">
-              <p>1.发红包有人‘中雷’可获得红包总额1.7倍每人</p>
-              <p>2.抢红包若’踩雷‘需按红包总额赔偿1.7倍</p>
+              <p>1.发红包有人'中雷'可获得红包总额{{dataInfo.room.redPayRate}}倍每人</p>
+              <p>2.抢红包若'踩雷'需按红包总额赔偿{{dataInfo.room.redPayRate}}倍</p>
             </van-col>
           </van-row>
         </div>
@@ -66,7 +66,7 @@ export default {
 		return {
       visible: false,
       formData:{
-        money:10,
+        money:30,
         leishu:0
       }
 		}

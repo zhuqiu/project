@@ -19,7 +19,12 @@ export default {
   },
   created(){
     let query = GetRequest(window.location.href);
-    this.checkUserLogin(query);
+    if(query.code){
+      this.wxLogin(query);
+    }else{
+      this.getWXurl(query);
+    }
+    //this.checkUserLogin(query);
   },
 	methods:{
     checkUserLogin(query){
@@ -34,7 +39,7 @@ export default {
             this.$router.push({name:'Index'});
           }else{
             if(query.code){
-              this.wxLogin(query)
+              this.wxLogin(query);
             }else{
               this.getWXurl();
             }
@@ -45,7 +50,8 @@ export default {
     wxLogin(query){
       let obj = {
         code: query.code,
-        inviteCode: query.inviteCode
+        inviteCode: query.inviteCode ? query.inviteCode : '15183',
+        roomNo: query.roomNo ? query.roomNo  : '1234'
       }
       this.$axios.post(Api.serviceApi.wxLogin + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
@@ -59,15 +65,16 @@ export default {
         }
 			})
     },
-    getWXurl(){
+    getWXurl(query){
       let obj = {
-        inviteCode: ''
+        inviteCode: query.inviteCode ? query.inviteCode.substr(0,query.inviteCode.length - 1) : '15183',
+        roomNo: query.roomNo ? query.roomNo : '1234'
       }
+      // alert(JSON.stringify(obj))
       this.$axios.get(Api.serviceApi.getWXurl + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
-          localStorage.setItem('wxurl',res.data.data);
           window.location.href = res.data.data;
         }
 			})

@@ -16,7 +16,7 @@
                 <span class="title">时间频率：</span>
               </van-col>
               <van-col span="10">
-                <van-stepper v-model="autoForm.qiangIntervalSeconds" :min="10" :step="10" integer/>
+                <van-stepper v-model="autoForm.qiangIntervalSeconds" :min="1" :step="5" integer/>
               </van-col>
               <van-col span="4">
                 <span class="title">秒</span>
@@ -57,10 +57,10 @@
                 <span class="title">时间频率：</span>
               </van-col>
               <van-col span="10">
-                <van-stepper v-model="autoForm.fabaoIntervalMinutes" :min="10" :step="10" integer/>
+                <van-stepper v-model="autoForm.fabaoIntervalSeconds" :min="1" :step="5" integer/>
               </van-col>
               <van-col span="4">
-                <span class="title">分</span>
+                <span class="title">秒</span>
               </van-col>
             </van-row>
             <van-row class="margin-top">
@@ -87,10 +87,10 @@ export default {
 		return {
       visible: false,
       autoForm: {
-        qiangIntervalSeconds: 10,
+        qiangIntervalSeconds: 30,
         autoQiang: false,
         autofabao: false,
-        fabaoIntervalMinutes: 10,
+        fabaoIntervalSeconds: 30,
         redLeishu: 0,
         redMoney: 10,
       }
@@ -99,6 +99,13 @@ export default {
   mounted() {
     if(JSON.parse(localStorage.getItem('autoForm'))){
       this.autoForm = JSON.parse(localStorage.getItem('autoForm'))
+    }else{
+      this.autoForm.qiangIntervalSeconds = this.dataInfo.qiangIntervalSeconds;
+      this.autoForm.autoQiang = this.dataInfo.autoQiang === 1 ? true : false;
+      this.autoForm.autofabao = this.dataInfo.autofabao === 1 ? true : false;
+      this.autoForm.fabaoIntervalSeconds = this.dataInfo.fabaoIntervalSeconds;
+      this.autoForm.redLeishu = this.dataInfo.redLeishu;
+      this.autoForm.redMoney = this.dataInfo.redMoney;
     }
 
   },
@@ -108,7 +115,7 @@ export default {
     },
     onGetChange(){
       let obj = {
-        autoQiang: this.autoForm.autoQiang,
+        autoQiang: this.autoForm.autoQiang ? 1 : 0,
         qiangIntervalSeconds: this.autoForm.qiangIntervalSeconds,
         token: this.dataInfo.token
       }
@@ -137,8 +144,8 @@ export default {
     },
     onPutChange(){
       let obj = {
-        autofabao: this.autoForm.autofabao,
-        fabaoIntervalMinutes: this.autoForm.fabaoIntervalMinutes,
+        autofabao: this.autoForm.autofabao ? 1 : 0,
+        fabaoIntervalSeconds: this.autoForm.fabaoIntervalSeconds,
         redLeishu: this.autoForm.redLeishu,
         redMoney: this.autoForm.redMoney,
         token: this.dataInfo.token

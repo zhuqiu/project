@@ -23,3 +23,8 @@ export function GetRequest(url) {
   }
   return theRequest;
 }
+
+export function deepClone(obj) {
+  let str = JSON.stringify(obj);
+  return JSON.parse(str);
+}

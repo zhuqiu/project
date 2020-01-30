@@ -6,26 +6,33 @@
 		  get-container="body"
 		  class="common-model-class"
 		>
-			<div class="common-model-title">充值</div>
-			<div class="common-model-content">
-				<div>
-          <van-divider :style="{ margin:0 }">支付方式</van-divider>
-					<van-checkbox v-model="checked">微信支付</van-checkbox>
-				</div>
-        <div style="margin-top:20px;">
-          <van-divider :style="{ margin:0 }">充值金额</van-divider>
-          <ul class="item-list">
-            <li
-              v-for="(item,index) in dataList"
-              :key="index"
-              @click="payClick(item,index)"
-              :class="{ active: index === curindex }"
-            >
-              充值 {{item.number}} 元 测试用
-            </li>
-          </ul>
+      <div class="common-model-title">充值</div>
+      <div class="common-model-content">
+        <div v-if='dataInfo.chongzhiType === 1'>
+          <div>
+            <van-divider :style="{ margin:0 }">支付方式</van-divider>
+            <van-checkbox v-model="checked">微信支付</van-checkbox>
+          </div>
+          <div style="margin-top:20px;">
+            <van-divider :style="{ margin:0 }">充值金额</van-divider>
+            <ul class="item-list">
+              <li
+                v-for="(item,index) in dataList"
+                :key="index"
+                @click="payClick(item,index)"
+                :class="{ active: index === curindex }"
+              >
+                充值 {{item.number}} 元 测试用
+              </li>
+            </ul>
+          </div>
         </div>
-			</div>
+        <div v-else>
+          <img :src="dataInfo.shoukuanImg" alt="" style="width:100%;">
+          <div style="color:red">注：转账时请在备注中填写您的ID</div>
+        </div>
+      </div>
+      
 		</van-popup>
 	</div>
 </template>

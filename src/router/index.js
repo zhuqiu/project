@@ -14,14 +14,18 @@ import rechargecenter from '@/components/views/recharge-center.vue'
 
 import extractcenter from '@/components/views/extract-center.vue'
 
+import welfarecenter from '@/components/views/welfare-center.vue'
+
+import groupcenter from '@/components/views/group-center.vue'
+
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Index',
-      component: Index
+      name: 'wxlogin',
+      component: wxlogin
     },
     {
       path: '/Index',
@@ -52,7 +56,16 @@ export default new Router({
       path: '/extractcenter',
       name: 'extractcenter',
       component: extractcenter
+    },
+    {
+      path: '/welfarecenter',
+      name: 'welfarecenter',
+      component: welfarecenter
+    },
+    {
+      path: '/groupcenter',
+      name: 'groupcenter',
+      component: groupcenter
     }
-
   ]
 })

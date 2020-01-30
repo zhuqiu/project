@@ -40,14 +40,9 @@ router.beforeEach((to, from, next) => {
 
   Vue.prototype.dataInfo = JSON.parse(localStorage.getItem('data'));
 
-  if(Vue.prototype.dataInfo){
-    let title = Vue.prototype.dataInfo.groupName; //修改title
-    document.title = title ? title : ''
-  }
-
-  if(to.name === 'Index' && !JSON.parse(localStorage.getItem('data'))){
-    router.push({name: 'wxlogin'})
-  }
+  // if(to.name === 'Index' && !JSON.parse(localStorage.getItem('data'))){
+  //   router.push({name: 'wxlogin'})
+  // }
 
   //添加请求拦截器
   axios.interceptors.request.use(function (config) {

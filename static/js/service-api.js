@@ -57,7 +57,19 @@ export default{
     getWXurl: remoteUrl + '/data/api/getWXurl',
 
     //获取微信分享参数
-    initWXJSInterface: remoteUrl + '/data/api/initWXJSInterface'
+    initWXJSInterface: remoteUrl + '/data/api/initWXJSInterface',
+
+    //查找群
+    findRooms: remoteUrl + '/data/api/findRooms',
+
+    //创建房间
+    createRoom: remoteUrl + '/data/api/createRoom',
+
+    //切换房间
+    changeRoom: remoteUrl + '/data/api/changeRoom',
+
+    //修改房间
+    updateRoom: remoteUrl + '/data/api/updateRoom'
 	}
 }
 

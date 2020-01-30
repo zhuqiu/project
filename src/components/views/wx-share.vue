@@ -25,10 +25,7 @@ export default {
       let obj = {
         url: ''
       }
-      url = localStorage.getItem('wxurl');
-      if(url){
-        obj.url = decodeURIComponent(url.split('#')[0]);
-      }
+      obj.url = encodeURIComponent(window.location.href.split('#')[0]);
       this.$axios.get(Api.serviceApi.initWXJSInterface + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
@@ -45,13 +42,13 @@ export default {
 
           wx.ready(function(){
             let title = that.dataInfo ? that.dataInfo.groupName : '金字塔10-500（上分复制金额）';
-            let shareCurrurl = 'http://red.zero-yun.cn';
+            let shareCurrurl = obj.url;
             let desc = '千万红包等你免费领取';
-            let imgUrl = 'http://red.zero-yun.cn/static/img/red-package.png';
+            let imgUrl = obj.url + 'static/img/red-package.png';
             // 获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
             wx.onMenuShareTimeline({
               title: title, // 分享标题
-              link:shareCurrurl,
+              link: shareCurrurl,
               desc: desc, // 分享描述,
               imgUrl: imgUrl, // 分享图标
               success: function () {
@@ -65,13 +62,14 @@ export default {
             // 获取“分享给朋友”按钮点击状态及自定义分享内容接口
             wx.onMenuShareAppMessage({
               title: title, // 分享标题
-              link:shareCurrurl,
+              link: shareCurrurl,
               desc: desc, // 分享描述,
               imgUrl: imgUrl, // 分享图标
               type: 'link', // 分享类型,music、video或link，不填默认为link
               dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
               success: function () {
                     // 用户确认分享后执行的回调函数
+                    
               },
               cancel: function () {
                     // 用户取消分享后执行的回调函数

@@ -65,15 +65,16 @@ export default {
     },
     // 连接丢失
     onConnectionLost (responseObject) {
+      this.$emit('messageArrived', "{type:8}")
       if (responseObject.errorCode === 0) {
-        console.log('连接已断开')
+        console.log('连接已断开');
       } else {
-        console.log('异常：连接丢失' + responseObject.errorMessage)
+        console.log('异常：连接丢失' + responseObject.errorMessage);
       }
     },
     // 接收消息事件
     onMessageArrived (message) {
-      // console.log(message)
+      // console.log(message.payloadString)
       this.$emit('messageArrived', message.payloadString)
     },
     // 断开mqtt连接
