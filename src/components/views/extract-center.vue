@@ -113,6 +113,10 @@
                     <div>状态</div>
                     <div>{{ item.status }}</div>
                   </div>
+                  <div class="detail-content-item" v-if="item.status === '审核失败'">
+                    <div style="width:80px;text-align:left">失败原因</div>
+                    <div style="text-align:right">{{ item.failRemark ? item.failRemark : '--' }}</div>
+                  </div>
                 </div>
               </div>
             </common-column>

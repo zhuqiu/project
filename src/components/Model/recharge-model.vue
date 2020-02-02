@@ -11,7 +11,7 @@
         <div v-if='dataInfo.chongzhiType === 1'>
           <div>
             <van-divider :style="{ margin:0 }">支付方式</van-divider>
-            <van-checkbox v-model="checked">微信支付</van-checkbox>
+            <van-checkbox v-model="checked" @change="onChange">微信支付</van-checkbox>
           </div>
           <div style="margin-top:20px;">
             <van-divider :style="{ margin:0 }">充值金额</van-divider>
@@ -22,7 +22,7 @@
                 @click="payClick(item,index)"
                 :class="{ active: index === curindex }"
               >
-                充值 {{item.number}} 元 测试用
+                充值 {{item.number}} 元
               </li>
             </ul>
           </div>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import wx from 'weixin-js-sdk';
 
 import Api from '../../../static/js/service-api';
 
@@ -53,21 +54,21 @@ export default {
       dataList:[{
         number: 1
         }
-        // ,{
-        // number: 50
-        // },{
-        // number: 100
-        // },{
-        // number: 300
-        // },{
-        // number: 500
-        // },{
-        // number: 1000
-        // },{
-        // number: 2000
-        // },{
-        // number: 3000
-        // }
+        ,{
+        number: 50
+        },{
+        number: 100
+        },{
+        number: 300
+        },{
+        number: 500
+        },{
+        number: 1000
+        },{
+        number: 2000
+        },{
+        number: 3000
+        }
         ]
 		}
 	},
@@ -75,19 +76,57 @@ export default {
 		show(){
 			this.visible = true;
     },
+    onChange(){
+      this.checked = true;
+    },
+    // payClick(item,index){
+    //   this.curindex = index;
+    //   let obj = {
+    //     money: item.number,
+    //     token: this.dataInfo.token
+    //   }
+    //   this.$axios.post(Api.serviceApi.getPayUrl + splitParam(obj) ).then((res) => {
+		// 	  if(res.data.code !== '0'){
+    //       this.$toast(res.data.msg);
+    //     }else{
+    //       window.location.href = res.data.data;
+    //     }
+		// 	})
+    // },
+    //改版在线充值
     payClick(item,index){
       this.curindex = index;
       let obj = {
-        money: item.number,
+        fee: item.number,
+        payType: 1,
         token: this.dataInfo.token
       }
-      this.$axios.post(Api.serviceApi.getPayUrl + splitParam(obj) ).then((res) => {
+      this.$axios.get(Api.serviceApi.getPaySign + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
-          window.location.href = res.data.data;
+          this.onBridgeReady(res.data.data)
         }
 			})
+    },
+    onBridgeReady(item){
+      wx.invoke(
+        'getBrandWCPayRequest', {
+          "appId": item.appId,     //公众号名称，由商户传入     
+          "timeStamp": item.timeStamp,         //时间戳，自1970年以来的秒数     
+          "nonceStr": item.nonceStr, //随机串     
+          "package": item.package,     
+          "signType": item.signType,         //微信签名方式：     
+          "paySign": item.paySign //微信签名 
+        },
+        function(res){
+          if(res.err_msg == "get_brand_wcpay_request:ok" ){
+          // 使用以上方式判断前端返回,微信团队郑重提示：
+                //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+            window.location.reload()
+          } 
+        }
+      ); 
     }
 	}
 

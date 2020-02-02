@@ -14,7 +14,7 @@
               <span class="title">红包大小：</span>
             </van-col>
             <van-col span="10">
-              <van-stepper v-model="formData.money" :min="10" integer :step="10"/>
+              <van-stepper v-model="formData.money" :min="dataInfo.room.minVal" :max="dataInfo.room.maxVal" integer :step="10"/>
             </van-col>
             <van-col span="4">
               <span class="title">金币</span>
@@ -70,7 +70,10 @@ export default {
         leishu:0
       }
 		}
-	},
+  },
+  created(){
+    this.money = this.dataInfo.room.minVal;
+  },
 	methods:{
 		show(){
 			this.visible = true;

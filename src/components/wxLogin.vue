@@ -67,10 +67,9 @@ export default {
     },
     getWXurl(query){
       let obj = {
-        inviteCode: query.inviteCode ? query.inviteCode.substr(0,query.inviteCode.length - 1) : '15183',
+        inviteCode: query.inviteCode ? (query.inviteCode.indexOf('&') > -1 ? query.inviteCode.substr(0,query.inviteCode.length - 1) : query.inviteCode) : '15183',
         roomNo: query.roomNo ? query.roomNo : '1234'
       }
-      // alert(JSON.stringify(obj))
       this.$axios.get(Api.serviceApi.getWXurl + splitParam(obj) ).then((res) => {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);

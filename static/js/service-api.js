@@ -69,7 +69,10 @@ export default{
     changeRoom: remoteUrl + '/data/api/changeRoom',
 
     //修改房间
-    updateRoom: remoteUrl + '/data/api/updateRoom'
+    updateRoom: remoteUrl + '/data/api/updateRoom',
+
+    //线上充值
+    getPaySign: remoteUrl + '/data/api/getPaySign'
 	}
 }
 

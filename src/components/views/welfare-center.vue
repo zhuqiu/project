@@ -9,7 +9,7 @@
       />
       <div class="welfare-content">
         <van-cell title="佣金金额" :value="rewardTotal"/>
-        <van-divider :style="{ color: 'red'}">团队人数</van-divider>
+        <van-divider :style="{ color: 'red'}">下级概念</van-divider>
         <ul class="item-list">
           <li v-for="(item, index) in teamList" :key="index">
             <common-column>
@@ -20,12 +20,12 @@
                     <div>{{item.number}}</div>
                   </div>
                 </div>
-                <!-- <div class="account-detail-content-bottom">
+                <div class="account-detail-content-bottom">
                   <div class="detail-content-item">
-                    <div>订单号</div>
-                    <div>11</div>
+                    <div>{{item.agentTitle}}</div>
+                    <div>{{item.agentNumber}} %</div>
                   </div>
-                </div> -->
+                </div>
               </div>
             </common-column>
           </li>
@@ -92,13 +92,48 @@ export default {
     let dataInfo = this.dataInfo;
     this.rewardTotal = dataInfo.rewardTotal;
     this.teamList = [
-      {title: '一级人数',number: dataInfo.level1count},
-      {title: '二级人数',number: dataInfo.level2count},
-      {title: '三级人数',number: dataInfo.level3count},
-      {title: '四级人数',number: dataInfo.level4count},
-      {title: '五级人数',number: dataInfo.level5count},
-      {title: '六级人数',number: dataInfo.level6count},
-      {title: '七级人数',number: dataInfo.level7count}
+      {
+        title: '一级人数',
+        number: dataInfo.level1count,
+        agentTitle: '一级代理佣金百分比',
+        agentNumber: dataInfo.level1
+      },
+      {
+        title: '二级人数',
+        number: dataInfo.level2count,
+        agentTitle: '二级代理佣金百分比',
+        agentNumber: dataInfo.level2
+      },
+      {
+        title: '三级人数',
+        number: dataInfo.level3count,
+        agentTitle: '三级代理佣金百分比',
+        agentNumber: dataInfo.level3
+      },
+      {
+        title: '四级人数',
+        number: dataInfo.level4count,
+        agentTitle: '四级代理佣金百分比',
+        agentNumber: dataInfo.level4
+      },
+      {
+        title: '五级人数',
+        number: dataInfo.level5count,
+        agentTitle: '五级代理佣金百分比',
+        agentNumber: dataInfo.level5
+      },
+      {
+        title: '六级人数',
+        number: dataInfo.level6count,
+        agentTitle: '六级代理佣金百分比',
+        agentNumber: dataInfo.level6
+      },
+      {
+        title: '七级人数',
+        number: dataInfo.level7count,
+        agentTitle: '七级代理佣金百分比',
+        agentNumber: dataInfo.level7
+      }
     ]
   },
 	methods:{

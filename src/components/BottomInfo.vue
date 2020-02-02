@@ -3,19 +3,19 @@
     <van-row class="operation-item">
       <van-col span="2" @click="onlineService">
         <div class="help-info">
-          <van-icon name="service-o" size="20"/>
+          <van-icon name="phone-o" size="20"/>
         </div>
       </van-col>
-      <van-col span="18" @click="sendRedClick">
+      <van-col span="20" @click="sendRedClick">
         <div class="dispute-info">
           <div class="dispute-input">点击 发红包</div>
         </div>
       </van-col>
-      <van-col span="2" @click="robotDeposit">
+      <!-- <van-col span="2" @click="robotDeposit">
         <div class="setting-info" >
           <van-icon name="setting-o" size="20"/>
         </div>
-      </van-col>
+      </van-col> -->
       <van-col span="2" @click="showMuchInfo">
         <div class="much-info">
           <van-icon name="add-o" size="20"/>
@@ -24,10 +24,10 @@
     </van-row>
     <div class="much-item" v-show="show">
       <van-row>
-        <van-col span="6" @click="onlineService">
+        <van-col span="6">
           <div class="item-detail">
-            <van-icon name="phone-o" size="30"/>
-            <span>客服在线</span>
+            <div style="height:29px;line-height:29px;font-size: 20px;color:#1989fa;">{{ dataInfo.room.roomNo }}</div>
+            <span>房间号</span>
           </div>
         </van-col>
         

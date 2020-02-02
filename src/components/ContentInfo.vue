@@ -132,11 +132,17 @@ export default {
       this.listData = JSON.parse(localStorage.getItem('list')).concat([])
     }
     this.$nextTick(() => {
+      // console.log(this.$refs.mqtt.topic);
       this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
     })
     
-
     this.gotoBottom();
+    //定时任务
+    // setInterval(() => {
+    //   this.$nextTick(() => {
+    //     this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
+    //   })
+    // }, 5000);
   },
   beforeDestroy () {
     this.$refs.mqtt.disconnect() // 关闭页面断开mqtt连接
@@ -162,7 +168,7 @@ export default {
             ele.scrollTop = ele.scrollHeight;
           },200)
         }
-      })
+      })     
     },
     getsyncUserInfo(){
       let obj = {
@@ -208,7 +214,6 @@ export default {
             }
 
             this.listData.push(data.data);
-            
 
             this.gotoBottom();
 
@@ -227,6 +232,7 @@ export default {
               }
             }
           })
+          this.gotoBottom();
           break;
         case 3:
           //赔付--中雷
@@ -235,13 +241,16 @@ export default {
               l.hasList.push(data.data.msg)
             }
           });
+          this.gotoBottom();
           localStorage.setItem('list',JSON.stringify(this.listData));
           break;
         case 4:
           //抢红包人数变动
           this.listData.forEach((l) => {
             if(l.redNum === data.data.redNum){
-              l.robbedBao = data.data.persions;
+              if(l.robbedBao <= data.data.persions){
+                l.robbedBao = data.data.persions;
+              }
             }
           });
           localStorage.setItem('list',JSON.stringify(this.listData));
@@ -273,6 +282,7 @@ export default {
               }
             });
           }
+          this.gotoBottom();
           break;
         case 8:
           this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
@@ -312,7 +322,7 @@ export default {
             // 音频的播放需要耗时
             setTimeout(() => {
                 // 后续操作
-                console.log("done.");
+                // console.log("done.");
             }, audio.duration * 1000); // audio.duration 为音频的时长单位为秒
         }).catch((e) => {
             // 音频加载失败
