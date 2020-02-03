@@ -116,7 +116,8 @@ export default {
         clientId:new Date().getTime()+"",
         userName: '',
         password: ''
-      }
+      },
+      timer: ''
     }
   },
   created() {
@@ -132,19 +133,20 @@ export default {
       this.listData = JSON.parse(localStorage.getItem('list')).concat([])
     }
     this.$nextTick(() => {
-      // console.log(this.$refs.mqtt.topic);
       this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
     })
+    //定时任务
+    this.timer = setInterval(() => {
+      console.info('定时任务轮询中')
+      if(!this.$refs.mqtt.client.isConnected){
+        this.$refs.mqtt.buildConnect(this.clientParams)
+      }
+    }, 5000);
     
     this.gotoBottom();
-    //定时任务
-    // setInterval(() => {
-    //   this.$nextTick(() => {
-    //     this.$refs.mqtt.buildConnect(this.clientParams) // 建立mqtt通信
-    //   })
-    // }, 5000);
   },
   beforeDestroy () {
+    clearInterval(this.timer);
     this.$refs.mqtt.disconnect() // 关闭页面断开mqtt连接
   },
   computed:{
@@ -201,7 +203,10 @@ export default {
               data.data.status = false;
             }else{
               data.data.status = true;
-              this.getMessageAudio();
+              if(data.data.roomNo === this.dataInfo.room.roomNo){
+                this.getMessageAudio();
+              }
+              
             }
             data.data.hasList = []; //已抢红包用户提示
             data.data.hasStatus = false; //该红包是否已抢过
@@ -232,6 +237,7 @@ export default {
               }
             }
           })
+          localStorage.setItem('list',JSON.stringify(this.listData));
           this.gotoBottom();
           break;
         case 3:
@@ -282,6 +288,7 @@ export default {
               }
             });
           }
+          localStorage.setItem('list',JSON.stringify(this.listData));
           this.gotoBottom();
           break;
         case 8:
@@ -299,6 +306,7 @@ export default {
           }
           if(status){
             l.redStatus = 3;
+            localStorage.setItem('list',JSON.stringify(this.listData));
             return false;
           }
           l.hasNum = data.length;
@@ -306,11 +314,12 @@ export default {
           l.hasRedTitle = data.title;
           l.hasSelectTip = data.tip;
           l.robbedBao = data.robbedBao;
+          localStorage.setItem('list',JSON.stringify(this.listData));
         }
       })
     },
     getMessageAudio(){
-      const src = '../../../static/img/9478.wav';
+      const src = '../../../static/img/333.mp3';
       // 初始化Aduio
       var audio = new Audio();
       var playPromise;

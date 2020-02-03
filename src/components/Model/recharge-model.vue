@@ -22,7 +22,7 @@
                 @click="payClick(item,index)"
                 :class="{ active: index === curindex }"
               >
-                充值 {{item.number}} 元
+                充值 {{item.number}} 金币
               </li>
             </ul>
           </div>

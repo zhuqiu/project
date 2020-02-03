@@ -57,8 +57,9 @@ export default {
 			  if(res.data.code !== '0'){
           this.$toast(res.data.msg);
         }else{
-          localStorage.setItem('data',JSON.stringify(res.data.data))
-          localStorage.setItem('amout',res.data.data.money)
+          localStorage.setItem('data',JSON.stringify(res.data.data));
+          localStorage.setItem('amout',res.data.data.money);
+          localStorage.removeItem('list');
           setTimeout(() =>{
             this.$router.push({name:'Index'});
           },500)
